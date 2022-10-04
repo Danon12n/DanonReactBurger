@@ -1,0 +1,9 @@
+.navItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.navItem p {
+    color: #8585AD;
+}
