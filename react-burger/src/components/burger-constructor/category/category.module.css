@@ -1,0 +1,9 @@
+.list {
+    display: grid;
+    grid-template-columns: 47% 47%;
+    column-gap: 24px;
+}
+
+.categoryTitle :not(:first) {
+    margin-top: 40px;
+}

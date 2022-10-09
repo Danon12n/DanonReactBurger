@@ -10,7 +10,7 @@ export default class AppHeader extends Component {
         super(props);
 
         this.state = {
-            activeId: 0,
+            activeId: 1,
         }
     }
 
@@ -33,15 +33,13 @@ export default class AppHeader extends Component {
             <header className={AppHeaderStyles.header}>
                 <nav className={AppHeaderStyles.navigation}>
                     {this.NavItems.map((elem, i) => {
-                        let active = false;
-                        if (this.state.activeId === i) active = true;
                         return (
                             <NavItem key={i} props={
                                 {
                                     id: i,
                                     icon: elem.icon,
                                     text: elem.text,
-                                    isActive: active,
+                                    isActive: this.state.activeId === i ? true : false,
                                     onClickFn: this.toggleNavItem
                                 }} />
                         )
