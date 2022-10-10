@@ -1,11 +1,9 @@
-.container {
-    
-    max-height: 43vh;
-    overflow-y: scroll;
+.list {
+    height: 70vh;
+    overflow-y: scroll ;
 }
 
-.buttonWrapper {
+.TabsWrapper {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
 }
+

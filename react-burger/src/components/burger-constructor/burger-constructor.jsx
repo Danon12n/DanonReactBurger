@@ -1,58 +1,63 @@
-import { Component } from 'react'
+import {
+    Button,
+    ConstructorElement,
+    CurrencyIcon,
+    DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import BurgerConstructorStyles from "./burger-constructor.module.css";
 
-import BurgerConstructorStyles from './burger-constructor.module.css'
+import data from "../../utils/data";
 
-import data from '../../utils/data'
+const test_data = data.filter((ingredient) => ingredient.type !== "bun");
+const bun = data.find((ingredient) => ingredient.type === "bun");
 
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
-import Category from './category/category'
+export default function BurgerConstructor() {
+    return (
+        <div className='mt-25 pl-4 pr-4'>
+            <ConstructorElement
+                extraClass={"ml-8 mb-4"}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
+                type='top'
+                isLocked={true}
+            />
+            <div className={BurgerConstructorStyles.container}>
+                {test_data.map((ingredient) => {
+                    return (
+                        <div
+                            key={ingredient._id}
+                            className={
+                                BurgerConstructorStyles.BurgerPartWrapper
+                            }
+                        >
+                            <DragIcon />
+                            <ConstructorElement
+                                extraClass='ml-2 mb-4'
+                                text={ingredient.name}
+                                price={ingredient.price}
+                                thumbnail={ingredient.image}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
 
-
-export default class BurgerConstructor extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            current: 0
-        }
-    }
-
-    tabNames = [
-        { name: 'Булки', type: 'bun' },
-        { name: 'Соусы', type: 'sauce' },
-        { name: 'Начинки', type: 'main' }
-    ]
-
-    setCurrent = (id) => {
-        this.setState({ ...this.state, current: id })
-    }
-
-    render() {
-        return (
-            <div>
-                <p className='text text_type_main-large mt-10'>Соберите бургер</p>
-                <div className='mt-5' style={{ display: 'flex' }}>
-                    {this.tabNames.map((elem, i) => {
-                        return (
-                            <Tab key={i} value={i} active={this.current === 0} onClick={this.setCurrent}>
-                                <p className='text text_type_main-small'>{elem.name}</p>
-                            </Tab>
-                        )
-                    })}
-                </div>
-
-                <div className={BurgerConstructorStyles.list}>
-                    {this.tabNames.map((elem, i) => {
-                        let type = elem.type;
-                        return (<Category
-                            key={i}
-                            ingredients={data.filter(elem => elem.type === type)}
-                            name={elem.name}
-                        />)
-                    })}
-                </div>
-            </div >
-        )
-    }
+            <ConstructorElement
+                extraClass='ml-8 mt-4'
+                text={`${bun.name} (низ)`}
+                price={bun.price}
+                thumbnail={bun.image}
+                type='bottom'
+                isLocked={true}
+            />
+            <div className={BurgerConstructorStyles.buttonWrapper + " mt-10"}>
+                <p className='text text_type_digits-medium  mr-3'>123</p>
+                <CurrencyIcon />
+                <Button htmlType='submit' extraClass='ml-10' size='large'>
+                    Оформить заказ
+                </Button>
+            </div>
+        </div>
+    );
 }
-

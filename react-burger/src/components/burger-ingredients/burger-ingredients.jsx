@@ -1,55 +1,66 @@
-import { Component } from 'react'
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import BurgerIngredientsStyles from './burger-ingredients.module.css'
+import { Component } from "react";
 
-import data from '../../utils/data'
+import BurgerIngredientsStyles from "./burger-ingredients.module.css";
 
-const test_data = [data[1], data[1], data[2], data[3], data[2], data[3], data[2], data[3], data[2], data[3],
-data[2], data[3], data[2], data[3], data[2], data[3], data[2], data[3], data[2], data[3], data[2], data[3],];
+import data from "../../utils/data";
+
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import Category from "./category/category";
+
+const buns = data.filter((item) => item.type === "bun");
+const mains = data.filter((item) => item.type === "main");
+const sauces = data.filter((item) => item.type === "sauce");
 
 export default class BurgerIngredients extends Component {
+    state = {
+        current: 0,
+    };
 
+    tabNames = [
+        { name: "Булки", type: "bun", ingredients: buns },
+        { name: "Соусы", type: "sauce", ingredients: mains },
+        { name: "Начинки", type: "main", ingredients: sauces },
+    ];
+
+    setCurrent = (id) => {
+        this.setState({ ...this.state, current: id });
+    };
 
     render() {
         return (
-            <div className=' mt-25 pl-4 pr-4'>
-                <ConstructorElement
-                    extraClass='ml-8 mb-4'
-                    text={`${data[0].name} (вверх)`}
-                    price={data[0].price}
-                    thumbnail={data[0].image}
-                    type='top'
-                    isLocked={true} />
-                <div className={BurgerIngredientsStyles.container}>
-
-                    {test_data.map((elem, i) => {
+            <div>
+                <p className='text text_type_main-large mt-10'>
+                    Соберите бургер
+                </p>
+                <div className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}>
+                    {this.tabNames.map((elem, i) => {
                         return (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', }}>
-                                <DragIcon />
-                                <ConstructorElement
-                                    extraClass='ml-2 mb-4'
-                                    text={elem.name}
-                                    price={elem.price}
-                                    thumbnail={elem.image}
-                                />
-                            </div>
-                        )
+                            <Tab
+                                key={i}
+                                value={i}
+                                active={this.current === 0}
+                                onClick={this.setCurrent}
+                            >
+                                <p className='text text_type_main-small'>
+                                    {elem.name}
+                                </p>
+                            </Tab>
+                        );
                     })}
                 </div>
 
-                <ConstructorElement
-                    extraClass='ml-8 mt-4'
-                    text={`${data[0].name} (низ)`}
-                    price={data[0].price}
-                    thumbnail={data[0].image}
-                    type='bottom'
-                    isLocked={true} />
-                <div className={BurgerIngredientsStyles.buttonWrapper + ' mt-10'}>
-                    <p className='text text_type_digits-medium  mr-3'>123</p>
-                    <CurrencyIcon />
-                    <Button htmlType='submit' extraClass='ml-10' size='large'>Оформить заказ</Button>
+                <div className={BurgerIngredientsStyles.list}>
+                    {this.tabNames.map((elem, i) => {
+                        return (
+                            <Category
+                                key={i}
+                                ingredients={elem.ingredients}
+                                name={elem.name}
+                            />
+                        );
+                    })}
                 </div>
-            </div >
-        )
+            </div>
+        );
     }
 }
