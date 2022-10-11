@@ -1,66 +1,68 @@
-import { Component } from "react";
-
 import BurgerIngredientsStyles from "./burger-ingredients.module.css";
+import { useState } from "react";
 
-import data from "../../utils/data";
+import PropTypes from "prop-types";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
 
-const buns = data.filter((item) => item.type === "bun");
-const mains = data.filter((item) => item.type === "main");
-const sauces = data.filter((item) => item.type === "sauce");
+export default function BurgerIngredients({ ingredients }) {
+    const [current, setCurrent] = useState("");
 
-export default class BurgerIngredients extends Component {
-    state = {
-        current: 0,
-    };
-
-    tabNames = [
-        { name: "Булки", type: "bun", ingredients: buns },
-        { name: "Соусы", type: "sauce", ingredients: mains },
-        { name: "Начинки", type: "main", ingredients: sauces },
+    const tabNames = [
+        {
+            name: "Булки",
+            ingredients: ingredients.filter((item) => item.type === "bun"),
+        },
+        {
+            name: "Соусы",
+            ingredients: ingredients.filter((item) => item.type === "main"),
+        },
+        {
+            name: "Начинки",
+            ingredients: ingredients.filter((item) => item.type === "sauce"),
+        },
     ];
 
-    setCurrent = (id) => {
-        this.setState({ ...this.state, current: id });
-    };
-
-    render() {
-        return (
-            <div>
-                <p className='text text_type_main-large mt-10'>
-                    Соберите бургер
-                </p>
-                <div className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}>
-                    {this.tabNames.map((elem, i) => {
-                        return (
-                            <Tab
-                                key={i}
-                                value={i}
-                                active={this.current === 0}
-                                onClick={this.setCurrent}
-                            >
-                                <p className='text text_type_main-small'>
-                                    {elem.name}
-                                </p>
-                            </Tab>
-                        );
-                    })}
-                </div>
-
-                <div className={BurgerIngredientsStyles.list}>
-                    {this.tabNames.map((elem, i) => {
-                        return (
-                            <Category
-                                key={i}
-                                ingredients={elem.ingredients}
-                                name={elem.name}
-                            />
-                        );
-                    })}
-                </div>
+    return (
+        <div>
+            <p className='text text_type_main-large mt-10'>Соберите бургер</p>
+            <div className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}>
+                {tabNames.map((elem) => {
+                    return (
+                        <Tab
+                            key={elem.name}
+                            value={elem.name}
+                            active={current === elem.name}
+                            onClick={setCurrent}
+                        >
+                            <p className='text text_type_main-small'>
+                                {elem.name}
+                            </p>
+                        </Tab>
+                    );
+                })}
             </div>
-        );
-    }
+
+            <div className={BurgerIngredientsStyles.list}>
+                {tabNames.map((elem, i) => {
+                    return (
+                        <Category
+                            key={elem.name}
+                            ingredients={elem.ingredients}
+                            name={elem.name}
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    );
 }
+
+BurgerIngredients.defaultProps = {
+    ingredients: [],
+};
+
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(PropTypes.object),
+};

@@ -3,13 +3,15 @@ import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 
+import data from "../../utils/data";
+
 function App() {
     return (
         <div className={AppStyles.App}>
             <AppHeader />
             <div className={AppStyles.wrapper}>
-                <BurgerIngredients />
-                <BurgerConstructor />
+                <BurgerIngredients ingredients={[...data]} />
+                <BurgerConstructor ingredients={[...data]} />
             </div>
         </div>
     );

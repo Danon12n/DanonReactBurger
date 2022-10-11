@@ -7,15 +7,16 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 
 export default function IngredientCard({ name, price, image }) {
-    /* eslint-disable */
-    // блокирую тут линтер, потому что пока функцию
-    // изменения стейта счетчика не использую
-    const [Quantity, setQuantity] = useState(0);
-    /* eslint-enable */
+    const [quantity, setQuantity] = useState(0);
 
     return (
-        <div className={IngredientCardStyles.card + " p-4"}>
-            {Quantity > 0 && <Counter size='default' count={Quantity} />}
+        <div
+            className={IngredientCardStyles.card + " p-4"}
+            onClick={() => {
+                setQuantity(quantity + 1);
+            }}
+        >
+            {quantity > 0 && <Counter size='default' count={quantity} />}
             <img src={image} alt='Ингредиент' />
             <div
                 className={IngredientCardStyles.cardPriceWrapper + " mt-1 mb-1"}

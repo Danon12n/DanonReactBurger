@@ -5,13 +5,15 @@ import {
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerConstructorStyles from "./burger-constructor.module.css";
+import PropTypes from "prop-types";
+import uuid from "react-uuid";
 
-import data from "../../utils/data";
+export default function BurgerConstructor({ ingredients }) {
+    const filling = ingredients.filter(
+        (ingredient) => ingredient.type !== "bun"
+    );
+    const bun = ingredients.find((ingredient) => ingredient.type === "bun");
 
-const test_data = data.filter((ingredient) => ingredient.type !== "bun");
-const bun = data.find((ingredient) => ingredient.type === "bun");
-
-export default function BurgerConstructor() {
     return (
         <div className='mt-25 pl-4 pr-4'>
             <ConstructorElement
@@ -23,10 +25,10 @@ export default function BurgerConstructor() {
                 isLocked={true}
             />
             <div className={BurgerConstructorStyles.container}>
-                {test_data.map((ingredient) => {
+                {filling.map((ingredient) => {
                     return (
                         <div
-                            key={ingredient._id}
+                            key={uuid()}
                             className={
                                 BurgerConstructorStyles.BurgerPartWrapper
                             }
@@ -61,3 +63,11 @@ export default function BurgerConstructor() {
         </div>
     );
 }
+
+BurgerConstructor.defaultProps = {
+    ingredients: [],
+};
+
+BurgerConstructor.propTypes = {
+    ingredients: PropTypes.arrayOf(PropTypes.object),
+};
