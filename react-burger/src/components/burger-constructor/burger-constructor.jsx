@@ -9,13 +9,20 @@ import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function BurgerConstructor({ ingredients }) {
-    const filling = ingredients.filter(
-        (ingredient) => ingredient.type !== "bun"
-    );
-    const bun = ingredients.find((ingredient) => ingredient.type === "bun");
+    const [filling, bun] = useMemo(() => {
+        const filling = ingredients
+            .filter((ingredient) => ingredient.type !== "bun")
+            .map((elem) => {
+                return { [uuid()]: elem };
+            });
+        return [
+            filling,
+            ingredients.find((ingredient) => ingredient.type === "bun"),
+        ];
+    }, [ingredients]);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -42,7 +49,7 @@ export default function BurgerConstructor({ ingredients }) {
                     {filling.map((ingredient) => {
                         return (
                             <div
-                                key={uuid()}
+                                key={Object.keys(ingredient)[0]}
                                 className={
                                     BurgerConstructorStyles.BurgerPartWrapper
                                 }
@@ -50,9 +57,11 @@ export default function BurgerConstructor({ ingredients }) {
                                 <DragIcon />
                                 <ConstructorElement
                                     extraClass='ml-2 mb-4'
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
+                                    text={Object.values(ingredient)[0].name}
+                                    price={Object.values(ingredient)[0].price}
+                                    thumbnail={
+                                        Object.values(ingredient)[0].image
+                                    }
                                 />
                             </div>
                         );

@@ -1,10 +1,22 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 .modal {
     display: flex;
     align-items: center;
     justify-content: center;
 
     flex-direction: column;
-
     z-index: 1;
 
     width: 37.5vw;
@@ -24,6 +36,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    z-index: 1;
+    position: relative;
 }
 
 .title {
@@ -31,10 +46,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 1;
 }
 
 .title p {
     flex-grow: 2;
+    z-index: 1;
 }
 
 .title button {
@@ -43,4 +60,5 @@
     border: none;
     background: transparent;
     flex-grow: 0.5;
+    z-index: 1;
 }

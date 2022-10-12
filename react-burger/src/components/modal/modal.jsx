@@ -18,27 +18,28 @@ const Modal = ({ children, title, onClose }) => {
         return () => {
             document.removeEventListener("keydown", handleEsc);
         };
-    });
+        //функция onClose статична поэтому нет смысла отпралвять ее в зависимости
+        // eslint-disable-next-line
+    }, []);
 
     return ReactDOM.createPortal(
-        <>
-            <ModalOverlay onClose={onClose}>
-                <div
-                    className={ModalStyles.modal}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
-                >
-                    <div className={ModalStyles.title}>
-                        <p className='text text_type_main-large'>{title}</p>
-                        <button onClick={onClose}>
-                            <CloseIcon type='primary' />
-                        </button>
-                    </div>
-                    <div className={ModalStyles.content}>{children}</div>
+        <div className={ModalStyles.wrapper}>
+            <div
+                className={ModalStyles.modal}
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+            >
+                <div className={ModalStyles.title}>
+                    <p className='text text_type_main-large'>{title}</p>
+                    <button onClick={onClose}>
+                        <CloseIcon type='primary' />
+                    </button>
                 </div>
-            </ModalOverlay>
-        </>,
+                <div className={ModalStyles.content}>{children}</div>
+            </div>
+            <ModalOverlay onClose={onClose} />
+        </div>,
         modalRoot
     );
 };
