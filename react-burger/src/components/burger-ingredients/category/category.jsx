@@ -15,7 +15,7 @@ export default function ConstructorCategory({ name, ingredients }) {
             </p>
             <div className={CategoryStyles.list}>
                 {ingredients.map((elem) => {
-                    return <IngredientCard key={elem._id} {...elem} />;
+                    return <IngredientCard key={elem._id} ingredient={elem} />;
                 })}
             </div>
         </>
