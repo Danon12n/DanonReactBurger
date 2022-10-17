@@ -16,7 +16,8 @@ export default function BurgerConstructor({ ingredients }) {
         const filling = ingredients
             .filter((ingredient) => ingredient.type !== "bun")
             .map((elem) => {
-                return { [uuid()]: elem };
+                elem.key = uuid();
+                return elem;
             });
         return [
             filling,
@@ -49,7 +50,7 @@ export default function BurgerConstructor({ ingredients }) {
                     {filling.map((ingredient) => {
                         return (
                             <div
-                                key={Object.keys(ingredient)[0]}
+                                key={ingredient.key}
                                 className={
                                     BurgerConstructorStyles.BurgerPartWrapper
                                 }
@@ -57,11 +58,9 @@ export default function BurgerConstructor({ ingredients }) {
                                 <DragIcon />
                                 <ConstructorElement
                                     extraClass='ml-2 mb-4'
-                                    text={Object.values(ingredient)[0].name}
-                                    price={Object.values(ingredient)[0].price}
-                                    thumbnail={
-                                        Object.values(ingredient)[0].image
-                                    }
+                                    text={ingredient.name}
+                                    price={ingredient.price}
+                                    thumbnail={ingredient.image}
                                 />
                             </div>
                         );
