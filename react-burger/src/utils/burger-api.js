@@ -14,3 +14,19 @@ export const getIngredients = () => {
             else return Promise.reject(data);
         });
 };
+
+export const createOrder = (orderBody) => {
+    return fetch(`${BURGER_API_URL}/orders`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ingredients: orderBody }),
+    })
+        .then(checkResponse)
+        .then((data) => {
+            if (data?.success) return data;
+            else return Promise.reject(data);
+        });
+};
