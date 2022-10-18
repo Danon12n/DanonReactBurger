@@ -1,28 +1,43 @@
 import {
     Button,
-    ConstructorElement,
     CurrencyIcon,
-    DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerConstructorStyles from "./burger-constructor.module.css";
-import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import CustomConstructorElement from "./custom-constructor-element/custom-constructor-element";
+import {
+    BurgerConstructorContext,
+    SET_ORDER_NUMBER,
+} from "../../utils/burger-constructor-context";
+import { createOrder } from "../../utils/burger-api";
 
-export default function BurgerConstructor({ ingredients }) {
-    const [filling, bun] = useMemo(() => {
+export default function BurgerConstructor() {
+    const { state, dispatch } = useContext(BurgerConstructorContext);
+    const ingredients = state.ingredients;
+
+    const [filling, bun, finalPrice] = useMemo(() => {
         const filling = ingredients
             .filter((ingredient) => ingredient.type !== "bun")
             .map((elem) => {
                 elem.key = uuid();
                 return elem;
             });
-        return [
-            filling,
-            ingredients.find((ingredient) => ingredient.type === "bun"),
-        ];
+
+        const bun = ingredients.find((ingredient) => ingredient.type === "bun");
+        if (bun && filling) {
+            return [
+                filling,
+                bun,
+                bun.price * 2 +
+                    filling.reduce((sum, elem) => {
+                        return sum + elem.price;
+                    }, 0),
+            ];
+        }
+        return [filling, bun];
     }, [ingredients]);
 
     const [isVisible, setIsVisible] = useState(false);
@@ -31,57 +46,57 @@ export default function BurgerConstructor({ ingredients }) {
         setIsVisible(false);
     };
 
-    const show = (e) => {
-        setIsVisible(true);
+    const onCreateOrderClick = (e) => {
+        const orderBody = [
+            bun._id,
+            ...filling.map((elem) => {
+                return elem._id;
+            }),
+            bun._id,
+        ];
+
+        createOrder(orderBody)
+            .then((data) => {
+                dispatch({
+                    type: SET_ORDER_NUMBER,
+                    payload: data.order.number,
+                });
+            })
+            .catch(() => alert("Возникла ошибка при создании заказа"))
+            .finally(() => {
+                setIsVisible(true);
+            });
     };
 
     return (
         <>
             <div className='mt-25 pl-4 pr-4'>
-                <ConstructorElement
-                    extraClass={"ml-8 mb-4"}
-                    text={`${bun.name} (верх)`}
-                    price={bun.price}
-                    thumbnail={bun.image}
-                    type='top'
-                    isLocked={true}
-                />
+                <CustomConstructorElement isBun={true} ingredient={bun} />
                 <div className={BurgerConstructorStyles.container}>
                     {filling.map((ingredient) => {
                         return (
-                            <div
+                            <CustomConstructorElement
                                 key={ingredient.key}
-                                className={
-                                    BurgerConstructorStyles.BurgerPartWrapper
-                                }
-                            >
-                                <DragIcon />
-                                <ConstructorElement
-                                    extraClass='ml-2 mb-4'
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
-                                />
-                            </div>
+                                isBun={false}
+                                ingredient={ingredient}
+                            />
                         );
                     })}
                 </div>
-
-                <ConstructorElement
-                    extraClass='ml-8 mt-4'
-                    text={`${bun.name} (низ)`}
-                    price={bun.price}
-                    thumbnail={bun.image}
-                    type='bottom'
-                    isLocked={true}
+                <CustomConstructorElement
+                    isBun={true}
+                    position='bottom'
+                    ingredient={bun}
                 />
                 <div
                     className={BurgerConstructorStyles.buttonWrapper + " mt-10"}
                 >
-                    <p className='text text_type_digits-medium  mr-3'>123</p>
+                    <p className='text text_type_digits-medium  mr-3'>
+                        {finalPrice}
+                    </p>
                     <CurrencyIcon />
                     <Button
-                        onClick={show}
+                        onClick={onCreateOrderClick}
                         htmlType='submit'
                         extraClass='ml-10'
                         size='large'
@@ -98,11 +113,3 @@ export default function BurgerConstructor({ ingredients }) {
         </>
     );
 }
-
-BurgerConstructor.defaultProps = {
-    ingredients: [],
-};
-
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.object),
-};
