@@ -43,5 +43,5 @@ CustomConstructorElement.defaultProps = {
 CustomConstructorElement.propTypes = {
     isBun: PropTypes.bool.isRequired,
     position: PropTypes.string,
-    ingredient: PropTypes.object,
+    ingredient: PropTypes.object.isRequired,
 };
