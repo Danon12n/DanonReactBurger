@@ -6,27 +6,32 @@ import BurgerConstructorStyles from "./burger-constructor.module.css";
 import uuid from "react-uuid";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
-import { useState, useMemo, useContext } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CustomConstructorElement from "./custom-constructor-element/custom-constructor-element";
-import {
-    BurgerConstructorContext,
-    SET_ORDER_NUMBER,
-} from "../../utils/burger-constructor-context";
-import { createOrder } from "../../utils/burger-api";
+import { getOrderNumberAction } from "../../services/actions";
+
+//TODO: реадизовать условный рендеринг, когда в ingredientsInConstructor пустой или в нем
+//      нет булок... если нет то <p>ДОБАВЬТЕ БУЛКУ!</p>, если есть то все как раньше...
 
 export default function BurgerConstructor() {
-    const { state, dispatch } = useContext(BurgerConstructorContext);
-    const ingredients = state.ingredients;
+    const dispatch = useDispatch();
+
+    const ingredientsInConstructor = useSelector(
+        (store) => store.main.ingredients
+    );
 
     const [filling, bun, finalPrice] = useMemo(() => {
-        const filling = ingredients
+        const filling = ingredientsInConstructor
             .filter((ingredient) => ingredient.type !== "bun")
             .map((elem) => {
                 elem.key = uuid();
                 return elem;
             });
 
-        const bun = ingredients.find((ingredient) => ingredient.type === "bun");
+        const bun = ingredientsInConstructor.find(
+            (ingredient) => ingredient.type === "bun"
+        );
         if (bun && filling) {
             return [
                 filling,
@@ -38,7 +43,7 @@ export default function BurgerConstructor() {
             ];
         }
         return [filling, bun];
-    }, [ingredients]);
+    }, [ingredientsInConstructor]);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -55,17 +60,8 @@ export default function BurgerConstructor() {
             bun._id,
         ];
 
-        createOrder(orderBody)
-            .then((data) => {
-                dispatch({
-                    type: SET_ORDER_NUMBER,
-                    payload: data.order.number,
-                });
-            })
-            .catch(() => alert("Возникла ошибка при создании заказа"))
-            .finally(() => {
-                setIsVisible(true);
-            });
+        dispatch(getOrderNumberAction(orderBody));
+        setIsVisible(true);
     };
 
     return (

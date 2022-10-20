@@ -1,10 +1,9 @@
 import styles from "./order-details.module.css";
 import DoneIcon from "../../images/done.svg";
-import { BurgerConstructorContext } from "../../utils/burger-constructor-context";
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 const OrderDetails = function () {
-    const { state } = useContext(BurgerConstructorContext);
+    const orderNumber = useSelector((store) => store.main.orderNumber);
 
     return (
         <div className={styles.details}>
@@ -13,7 +12,7 @@ const OrderDetails = function () {
                     styles.orderNumber + " text text_type_digits-large mb-8"
                 }
             >
-                {state.orderNumber}
+                {orderNumber}
             </p>
             <p className={styles.label + " text text_type_main-medium mb-15"}>
                 идентификатор заказа

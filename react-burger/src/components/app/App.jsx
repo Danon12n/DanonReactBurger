@@ -2,52 +2,41 @@ import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import { useEffect, useState, useReducer } from "react";
-import { getIngredients } from "../../utils/burger-api";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
-    BurgerConstructorContext,
-    reducer,
-    BurgerConstructorInitialState,
-    SET_INGREDIENTS,
-} from "../../utils/burger-constructor-context";
+    getIngredientsAction,
+    SET_CONSTRUCTOR_INGREDIENTS,
+} from "../../services/actions";
 
 function App() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [ingredients, setIngredients] = useState([]);
+    const dispatch = useDispatch();
 
-    const [state, dispatch] = useReducer(
-        reducer,
-        BurgerConstructorInitialState
+    const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(
+        (store) => store.main
     );
 
     useEffect(() => {
-        getIngredients()
-            .then(setIngredients)
-            .catch(() => alert("Возникла ошибка при загрузке"))
-            .finally(() => {
-                setIsLoading(false);
-            });
+        dispatch(getIngredientsAction());
+        dispatch({
+            type: SET_CONSTRUCTOR_INGREDIENTS,
+            ingredients: ingredients,
+        });
     }, []);
-
-    useEffect(() => {
-        if (ingredients) {
-            dispatch({ type: SET_INGREDIENTS, payload: ingredients });
-        }
-    }, [isLoading, ingredients]);
+    //TODO: когда можно будет добавлять элементы в burgerConstructor через DnD
+    //      перенести этот эффект в burgerIngredients и удалить dispatch
 
     return (
         <div className={AppStyles.App}>
             <AppHeader />
-            {isLoading ? (
+            {ingredientsFailed ? (
+                <p>ERROR</p>
+            ) : ingredientsRequest ? (
                 <h1 className='text text_type_main-large'>Идет загрузка...</h1>
             ) : (
                 <div className={AppStyles.wrapper}>
                     <BurgerIngredients ingredients={ingredients} />
-                    <BurgerConstructorContext.Provider
-                        value={{ state, dispatch }}
-                    >
-                        <BurgerConstructor />
-                    </BurgerConstructorContext.Provider>
+                    <BurgerConstructor />
                 </div>
             )}
         </div>

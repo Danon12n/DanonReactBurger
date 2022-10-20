@@ -1,13 +1,13 @@
 import BurgerIngredientsStyles from "./burger-ingredients.module.css";
 import { useState } from "react";
-
-import PropTypes from "prop-types";
-
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
 
-export default function BurgerIngredients({ ingredients }) {
+export default function BurgerIngredients() {
     const [current, setCurrent] = useState("");
+
+    const ingredients = useSelector((store) => store.main.ingredients);
 
     const tabNames = [
         {
@@ -58,11 +58,3 @@ export default function BurgerIngredients({ ingredients }) {
         </div>
     );
 }
-
-BurgerIngredients.defaultProps = {
-    ingredients: [],
-};
-
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.object),
-};
