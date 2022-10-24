@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
-import { getIngredientsAction } from "../../services/actions";
+import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 
 export default function BurgerIngredients() {
     const dispatch = useDispatch();
@@ -13,7 +13,9 @@ export default function BurgerIngredients() {
     }, []);
 
     const [current, setCurrent] = useState("");
-    const ingredients = useSelector((store) => store.main.ingredients);
+    const ingredients = useSelector(
+        (store) => store.burgerIngredients.ingredients
+    );
 
     const tabsRef = useRef();
 

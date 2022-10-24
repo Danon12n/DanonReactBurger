@@ -3,7 +3,7 @@ import DoneIcon from "../../images/done.svg";
 import { useSelector } from "react-redux";
 
 const OrderDetails = function () {
-    const orderNumber = useSelector((store) => store.main.orderNumber);
+    const { orderNumber } = useSelector((store) => store.orderModal);
 
     return (
         <div className={styles.details}>

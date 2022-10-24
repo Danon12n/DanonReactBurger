@@ -1,18 +1,19 @@
 import styles from "./ingredient-details.module.css";
-import PropsTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const IngredientDetails = function ({ ingredient }) {
+const IngredientDetails = function () {
+    const { currentIngredient } = useSelector((store) => store.ingredientModal);
     const components = [
-        { name: "Калории,ккал", value: ingredient.calories },
-        { name: "Белки, г", value: ingredient.proteins },
-        { name: "Жиры, г", value: ingredient.fat },
-        { name: "Углеводы, г", value: ingredient.carbohydrates },
+        { name: "Калории,ккал", value: currentIngredient.calories },
+        { name: "Белки, г", value: currentIngredient.proteins },
+        { name: "Жиры, г", value: currentIngredient.fat },
+        { name: "Углеводы, г", value: currentIngredient.carbohydrates },
     ];
     return (
         <div className={styles.details}>
             <img
                 className='mb-4'
-                src={ingredient.image_large}
+                src={currentIngredient.image_large}
                 alt={"ингредиент"}
             ></img>
             <p
@@ -20,7 +21,7 @@ const IngredientDetails = function ({ ingredient }) {
                     styles.ingredientName + " text text_type_main-medium mb-8"
                 }
             >
-                {ingredient.name}
+                {currentIngredient.name}
             </p>
             <div className={styles.compound}>
                 {components.map((component) => {
@@ -43,7 +44,3 @@ const IngredientDetails = function ({ ingredient }) {
     );
 };
 export { IngredientDetails };
-
-IngredientDetails.propTypes = {
-    ingredient: PropsTypes.object.isRequired,
-};

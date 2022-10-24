@@ -4,21 +4,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCardStyles from "./ingredient-card.module.css";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Modal } from "../../modal/modal";
 import { IngredientDetails } from "../../ingredient-details/ingredient-details";
-import {
-    SET_CURRENT_INGREDIENT,
-    DELETE_CURRENT_INGREDIENT,
-} from "../../../services/actions";
 import { useDrag } from "react-dnd/dist/hooks";
+import { boundIngredientModal } from "../../../services/actions/ingredient-modal";
 
 export default function IngredientCard({ ingredient }) {
-    // eslint-disable-next-line
-    const [isVisible, setIsVisible] = useState(false);
-
-    const dispatch = useDispatch();
+    const { currentIngredient } = useSelector((store) => store.ingredientModal);
 
     const { _id, image, price, name, counter } = ingredient;
 
@@ -28,18 +21,11 @@ export default function IngredientCard({ ingredient }) {
     });
 
     const close = (e) => {
-        dispatch({
-            type: DELETE_CURRENT_INGREDIENT,
-        });
-        setIsVisible(false);
+        boundIngredientModal.deleteIngredient();
     };
 
     const show = (e) => {
-        dispatch({
-            type: SET_CURRENT_INGREDIENT,
-            ingredient: ingredient,
-        });
-        setIsVisible(true);
+        boundIngredientModal.setIngredient(ingredient);
     };
 
     return (
@@ -64,9 +50,9 @@ export default function IngredientCard({ ingredient }) {
                 </div>
                 <p className='text text_type_main-default'>{name}</p>
             </div>
-            {isVisible && (
+            {currentIngredient !== null && (
                 <Modal title={"Детали ингредиента"} onClose={close}>
-                    <IngredientDetails ingredient={ingredient} />
+                    <IngredientDetails />
                 </Modal>
             )}
         </div>

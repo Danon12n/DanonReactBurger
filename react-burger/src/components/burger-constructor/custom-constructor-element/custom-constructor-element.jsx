@@ -4,15 +4,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./custom-constructor-element.module.css";
 import PropTypes from "prop-types";
-import { useCallback, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
 import { useDrop } from "react-dnd/dist/hooks/useDrop/useDrop";
 import { useDrag } from "react-dnd/dist/hooks/useDrag/useDrag";
-import {
-    DECREASE_INGREDIENT_COUNTER,
-    DELETE_CONSTRUCTOR_INGREDIENT,
-    SWAP_CONSTRUCTOR_INGREDIENTS,
-} from "../../../services/actions";
+import { boundBurgerConstructorActions } from "../../../services/actions/burger-constructor";
+import { boundBurgerIngredientsActions } from "../../../services/actions/burger-ingredients";
 
 export default function CustomConstructorElement({
     isBun,
@@ -20,16 +16,7 @@ export default function CustomConstructorElement({
     index,
     ingredient,
 }) {
-    const dispatch = useDispatch();
-
     const ref = useRef();
-    const moveCard = useCallback((dragIndex, hoverIndex) => {
-        dispatch({
-            type: SWAP_CONSTRUCTOR_INGREDIENTS,
-            dragIndex: dragIndex,
-            hoverIndex: hoverIndex,
-        });
-    }, []);
 
     const [{ handlerId }, drop] = useDrop({
         accept: "sort",
@@ -66,7 +53,10 @@ export default function CustomConstructorElement({
                 return;
             }
 
-            moveCard(dragIndex, hoverIndex);
+            boundBurgerConstructorActions.swapIngredients({
+                dragIndex: dragIndex,
+                hoverIndex: hoverIndex,
+            });
             item.index = hoverIndex;
         },
     });
@@ -102,14 +92,10 @@ export default function CustomConstructorElement({
                 price={ingredient.price}
                 thumbnail={ingredient.image}
                 handleClose={(e) => {
-                    dispatch({
-                        type: DELETE_CONSTRUCTOR_INGREDIENT,
-                        index: index,
-                    });
-                    dispatch({
-                        type: DECREASE_INGREDIENT_COUNTER,
-                        id: ingredient._id,
-                    });
+                    boundBurgerConstructorActions.deleteIngredient(index);
+                    boundBurgerIngredientsActions.decreaseCounter(
+                        ingredient._id
+                    );
                 }}
             />
         </div>

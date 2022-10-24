@@ -18,9 +18,7 @@ const Modal = ({ children, title, onClose }) => {
         return () => {
             document.removeEventListener("keydown", handleEsc);
         };
-        //функция onClose статична поэтому нет смысла отпралвять ее в зависимости
-        // eslint-disable-next-line
-    }, []);
+    }, [onClose]);
 
     return ReactDOM.createPortal(
         <div className={ModalStyles.wrapper}>

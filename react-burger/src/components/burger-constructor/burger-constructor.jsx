@@ -6,47 +6,31 @@ import BurgerConstructorStyles from "./burger-constructor.module.css";
 import uuid from "react-uuid";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../order-details/order-details";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomConstructorElement from "./custom-constructor-element/custom-constructor-element";
-import {
-    ADD_CONSTRUCTOR_INGREDIENT,
-    DECREASE_INGREDIENT_COUNTER,
-    getOrderNumberAction,
-    INCREASE_INGREDIENT_COUNTER,
-    UPDATE_CONSTRUCTOR_BUN,
-} from "../../services/actions";
+import { boundBurgerConstructorActions } from "../../services/actions/burger-constructor";
+import { boundBurgerIngredientsActions } from "../../services/actions/burger-ingredients";
+import { getOrderNumberAction } from "../../services/actions/order-modal";
 import { useDrop } from "react-dnd/dist/hooks/useDrop";
 
 export default function BurgerConstructor() {
     const dispatch = useDispatch();
 
-    const ingredients = useSelector((store) => store.main.ingredients);
-    const currentBun = useSelector(
-        (store) => store.main.ingredientsInConstructor.bun
+    const ingredients = useSelector(
+        (store) => store.burgerIngredients.ingredients
     );
+    const { fillings, bun } = useSelector((store) => store.burgerConstructor);
 
     const onDropHandler = (itemId) => {
         const ingredient = ingredients.find((elem) => elem._id === itemId._id);
         if (ingredient.type === "bun") {
-            dispatch({
-                type: UPDATE_CONSTRUCTOR_BUN,
-                bun: ingredient,
-            });
-            dispatch({
-                type: INCREASE_INGREDIENT_COUNTER,
-                id: itemId._id,
-            });
-            dispatch({ type: DECREASE_INGREDIENT_COUNTER, id: currentBun._id });
+            boundBurgerConstructorActions.updateBun(ingredient);
+            boundBurgerIngredientsActions.increaseCounter(itemId._id);
+            boundBurgerIngredientsActions.decreaseCounter(bun._id);
         } else {
-            dispatch({
-                type: ADD_CONSTRUCTOR_INGREDIENT,
-                ingredient: ingredient,
-            });
-            dispatch({
-                type: INCREASE_INGREDIENT_COUNTER,
-                id: itemId._id,
-            });
+            boundBurgerConstructorActions.addIngredient(ingredient);
+            boundBurgerIngredientsActions.increaseCounter(itemId._id);
         }
     };
 
@@ -60,20 +44,16 @@ export default function BurgerConstructor() {
         }),
     });
 
-    const { filling, bun } = useSelector(
-        (store) => store.main.ingredientsInConstructor
-    );
-
     const finalPrice = useMemo(() => {
-        if (bun.price) {
+        if (bun !== null) {
             return (
                 bun.price * 2 +
-                filling.reduce((sum, elem) => {
+                fillings.reduce((sum, elem) => {
                     return sum + elem.price;
                 }, 0)
             );
         } else return 0;
-    }, [filling, bun]);
+    }, [fillings, bun]);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -84,7 +64,7 @@ export default function BurgerConstructor() {
     const onCreateOrderClick = (e) => {
         const orderBody = [
             bun._id,
-            ...filling.map((elem) => {
+            ...fillings.map((elem) => {
                 return elem._id;
             }),
             bun._id,
@@ -98,45 +78,58 @@ export default function BurgerConstructor() {
 
     return (
         <>
-            <div className='mt-25 pl-4 pr-4'>
-                <CustomConstructorElement isBun={true} ingredient={bun} />
+            {bun !== null ? (
+                <div className='mt-25 pl-4 pr-4'>
+                    <CustomConstructorElement isBun={true} ingredient={bun} />
+                    <div
+                        ref={dropTarget}
+                        className={`${BurgerConstructorStyles.container} ${isActiveCont}`}
+                    >
+                        {fillings.map((ingredient, i) => {
+                            return (
+                                <CustomConstructorElement
+                                    //key={ingredient.key}
+                                    isBun={false}
+                                    index={i}
+                                    ingredient={ingredient}
+                                />
+                            );
+                        })}
+                    </div>
+                    <CustomConstructorElement
+                        isBun={true}
+                        position='bottom'
+                        ingredient={bun}
+                    />
+                    <div
+                        className={
+                            BurgerConstructorStyles.buttonWrapper + " mt-10"
+                        }
+                    >
+                        <p className='text text_type_digits-medium  mr-3'>
+                            {finalPrice}
+                        </p>
+                        <CurrencyIcon />
+                        <Button
+                            onClick={onCreateOrderClick}
+                            htmlType='submit'
+                            extraClass='ml-10'
+                            size='large'
+                        >
+                            Оформить заказ
+                        </Button>
+                    </div>
+                </div>
+            ) : (
                 <div
                     ref={dropTarget}
-                    className={`${BurgerConstructorStyles.container} ${isActiveCont}`}
+                    className={BurgerConstructorStyles.infoWrapper}
                 >
-                    {filling.map((ingredient, i) => {
-                        return (
-                            <CustomConstructorElement
-                                //key={ingredient.key}
-                                isBun={false}
-                                index={i}
-                                ingredient={ingredient}
-                            />
-                        );
-                    })}
-                </div>
-                <CustomConstructorElement
-                    isBun={true}
-                    position='bottom'
-                    ingredient={bun}
-                />
-                <div
-                    className={BurgerConstructorStyles.buttonWrapper + " mt-10"}
-                >
-                    <p className='text text_type_digits-medium  mr-3'>
-                        {finalPrice}
+                    <p className='text text_type_main-medium'>
+                        Перенеси булочку сюда
                     </p>
-                    <CurrencyIcon />
-                    <Button
-                        onClick={onCreateOrderClick}
-                        htmlType='submit'
-                        extraClass='ml-10'
-                        size='large'
-                    >
-                        Оформить заказ
-                    </Button>
                 </div>
-            </div>
+            )}
             {isVisible && (
                 <Modal title={""} onClose={close}>
                     <OrderDetails />
