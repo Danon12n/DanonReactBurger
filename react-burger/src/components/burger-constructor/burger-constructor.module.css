@@ -1,5 +1,5 @@
 .container {
-    max-height: 43vh;
+    height: 43vh;
     overflow-y: scroll;
 
     display: flex;
@@ -11,4 +11,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.active {
+    border: 5px solid rgba(76, 76, 255, 1);
 }

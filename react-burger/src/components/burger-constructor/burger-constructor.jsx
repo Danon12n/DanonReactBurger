@@ -9,41 +9,71 @@ import { OrderDetails } from "../order-details/order-details";
 import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomConstructorElement from "./custom-constructor-element/custom-constructor-element";
-import { getOrderNumberAction } from "../../services/actions";
-
-//TODO: реадизовать условный рендеринг, когда в ingredientsInConstructor пустой или в нем
-//      нет булок... если нет то <p>ДОБАВЬТЕ БУЛКУ!</p>, если есть то все как раньше...
+import {
+    ADD_CONSTRUCTOR_INGREDIENT,
+    DECREASE_INGREDIENT_COUNTER,
+    getOrderNumberAction,
+    INCREASE_INGREDIENT_COUNTER,
+    UPDATE_CONSTRUCTOR_BUN,
+} from "../../services/actions";
+import { useDrop } from "react-dnd/dist/hooks/useDrop";
 
 export default function BurgerConstructor() {
     const dispatch = useDispatch();
 
-    const ingredientsInConstructor = useSelector(
-        (store) => store.main.ingredients
+    const ingredients = useSelector((store) => store.main.ingredients);
+    const currentBun = useSelector(
+        (store) => store.main.ingredientsInConstructor.bun
     );
 
-    const [filling, bun, finalPrice] = useMemo(() => {
-        const filling = ingredientsInConstructor
-            .filter((ingredient) => ingredient.type !== "bun")
-            .map((elem) => {
-                elem.key = uuid();
-                return elem;
+    const onDropHandler = (itemId) => {
+        const ingredient = ingredients.find((elem) => elem._id === itemId._id);
+        if (ingredient.type === "bun") {
+            dispatch({
+                type: UPDATE_CONSTRUCTOR_BUN,
+                bun: ingredient,
             });
-
-        const bun = ingredientsInConstructor.find(
-            (ingredient) => ingredient.type === "bun"
-        );
-        if (bun && filling) {
-            return [
-                filling,
-                bun,
-                bun.price * 2 +
-                    filling.reduce((sum, elem) => {
-                        return sum + elem.price;
-                    }, 0),
-            ];
+            dispatch({
+                type: INCREASE_INGREDIENT_COUNTER,
+                id: itemId._id,
+            });
+            dispatch({ type: DECREASE_INGREDIENT_COUNTER, id: currentBun._id });
+        } else {
+            dispatch({
+                type: ADD_CONSTRUCTOR_INGREDIENT,
+                ingredient: ingredient,
+            });
+            dispatch({
+                type: INCREASE_INGREDIENT_COUNTER,
+                id: itemId._id,
+            });
         }
-        return [filling, bun];
-    }, [ingredientsInConstructor]);
+    };
+
+    const [{ isHover }, dropTarget] = useDrop({
+        accept: "ingredient",
+        drop(itemId) {
+            onDropHandler(itemId);
+        },
+        collect: (monitor) => ({
+            isHover: monitor.isOver(),
+        }),
+    });
+
+    const { filling, bun } = useSelector(
+        (store) => store.main.ingredientsInConstructor
+    );
+
+    const finalPrice = useMemo(() => {
+        if (bun.price) {
+            return (
+                bun.price * 2 +
+                filling.reduce((sum, elem) => {
+                    return sum + elem.price;
+                }, 0)
+            );
+        } else return 0;
+    }, [filling, bun]);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -64,16 +94,22 @@ export default function BurgerConstructor() {
         setIsVisible(true);
     };
 
+    const isActiveCont = isHover ? BurgerConstructorStyles.active : "";
+
     return (
         <>
             <div className='mt-25 pl-4 pr-4'>
                 <CustomConstructorElement isBun={true} ingredient={bun} />
-                <div className={BurgerConstructorStyles.container}>
-                    {filling.map((ingredient) => {
+                <div
+                    ref={dropTarget}
+                    className={`${BurgerConstructorStyles.container} ${isActiveCont}`}
+                >
+                    {filling.map((ingredient, i) => {
                         return (
                             <CustomConstructorElement
-                                key={ingredient.key}
+                                //key={ingredient.key}
                                 isBun={false}
+                                index={i}
                                 ingredient={ingredient}
                             />
                         );

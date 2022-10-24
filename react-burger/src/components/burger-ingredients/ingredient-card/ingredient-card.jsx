@@ -12,15 +12,20 @@ import {
     SET_CURRENT_INGREDIENT,
     DELETE_CURRENT_INGREDIENT,
 } from "../../../services/actions";
+import { useDrag } from "react-dnd/dist/hooks";
 
 export default function IngredientCard({ ingredient }) {
     // eslint-disable-next-line
-    const [quantity, setQuantity] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
 
     const dispatch = useDispatch();
 
-    const { image, price, name } = ingredient;
+    const { _id, image, price, name, counter } = ingredient;
+
+    const [{}, dragRef] = useDrag({
+        type: "ingredient",
+        item: { _id },
+    });
 
     const close = (e) => {
         dispatch({
@@ -38,12 +43,12 @@ export default function IngredientCard({ ingredient }) {
     };
 
     return (
-        <>
+        <div ref={dragRef}>
             <div className={IngredientCardStyles.card + " p-4"} onClick={show}>
-                {quantity > 0 && (
+                {counter > 0 && (
                     <Counter
                         extraClass={IngredientCardStyles.counter}
-                        count={quantity}
+                        count={counter}
                     />
                 )}
                 <img src={image} alt='Ингредиент' />
@@ -64,7 +69,7 @@ export default function IngredientCard({ ingredient }) {
                     <IngredientDetails ingredient={ingredient} />
                 </Modal>
             )}
-        </>
+        </div>
     );
 }
 

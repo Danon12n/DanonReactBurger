@@ -6,6 +6,7 @@ export default function ConstructorCategory({ name, ingredients }) {
     return (
         <>
             <p
+                name='categoryTitle'
                 className={
                     CategoryStyles.categoryTitle +
                     " text text_type_main-medium  mb-6 mt-10"

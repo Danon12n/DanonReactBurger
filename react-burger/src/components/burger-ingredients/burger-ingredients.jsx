@@ -1,14 +1,29 @@
 import BurgerIngredientsStyles from "./burger-ingredients.module.css";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
+import { getIngredientsAction } from "../../services/actions";
 
 export default function BurgerIngredients() {
-    const [current, setCurrent] = useState("");
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getIngredientsAction());
+    }, []);
+
+    const [current, setCurrent] = useState("");
     const ingredients = useSelector((store) => store.main.ingredients);
 
+    const tabsRef = useRef();
+
+    const categoryTitles = document.getElementsByName("categoryTitle");
+    const categoryTitlesArray = [];
+    for (
+        var i = categoryTitles.length;
+        i--;
+        categoryTitlesArray.unshift(categoryTitles[i])
+    );
     const tabNames = [
         {
             name: "Булки",
@@ -24,10 +39,29 @@ export default function BurgerIngredients() {
         },
     ];
 
+    const onScrollHandler = (e) => {
+        const distances = categoryTitlesArray.map((elem) => {
+            return elem.getBoundingClientRect().y;
+        });
+
+        const parent = e.target.getBoundingClientRect().y;
+        const differences = distances.map((el) => {
+            let new_el = el - parent;
+            if (new_el < 0) return -new_el;
+            return new_el;
+        });
+        const min = Math.min.apply(null, differences);
+        const index = differences.indexOf(min);
+        setCurrent(tabNames[index].name);
+    };
+
     return (
         <div>
             <p className='text text_type_main-large mt-10'>Соберите бургер</p>
-            <div className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}>
+            <div
+                ref={tabsRef}
+                className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}
+            >
                 {tabNames.map((elem) => {
                     return (
                         <Tab
@@ -44,7 +78,10 @@ export default function BurgerIngredients() {
                 })}
             </div>
 
-            <div className={BurgerIngredientsStyles.list}>
+            <div
+                className={BurgerIngredientsStyles.list}
+                onScroll={onScrollHandler}
+            >
                 {tabNames.map((elem, i) => {
                     return (
                         <Category
