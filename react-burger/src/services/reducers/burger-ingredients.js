@@ -37,28 +37,30 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ingredientsFailed: true,
             };
         case INCREASE_INGREDIENT_COUNTER:
-            const res1 = state.ingredients.map((elem) => {
-                if (elem._id === action.payload) {
-                    elem.counter++;
-                    if (elem.type === "bun") elem.counter++;
-                }
-
-                return elem;
-            });
             return {
                 ...state,
-                ingredients: [...res1],
+                ingredients: [
+                    ...state.ingredients.map((elem) => {
+                        const newElem = { ...elem };
+                        if (elem._id === action.payload) {
+                            newElem.counter++;
+                            if (elem.type === "bun") newElem.counter++;
+                        }
+                        return newElem;
+                    }),
+                ],
             };
         case DECREASE_INGREDIENT_COUNTER:
             return {
                 ...state,
                 ingredients: [
                     ...state.ingredients.map((elem) => {
+                        const newElem = { ...elem };
                         if (elem._id === action.payload) {
-                            elem.counter--;
-                            if (elem.type === "bun") elem.counter--;
+                            newElem.counter--;
+                            if (elem.type === "bun") newElem.counter--;
                         }
-                        return elem;
+                        return newElem;
                     }),
                 ],
             };

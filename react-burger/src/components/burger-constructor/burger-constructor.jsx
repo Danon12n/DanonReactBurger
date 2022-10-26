@@ -27,13 +27,12 @@ export default function BurgerConstructor() {
         if (ingredient.type === "bun") {
             boundBurgerConstructorActions.updateBun(ingredient);
             boundBurgerIngredientsActions.increaseCounter(itemId._id);
-            boundBurgerIngredientsActions.decreaseCounter(bun._id);
+            if (bun !== null)
+                boundBurgerIngredientsActions.decreaseCounter(bun._id);
         } else {
-            const ingredientKey = uuid();
-            boundBurgerConstructorActions.addIngredient({
-                ingredient,
-                ingredientKey,
-            });
+            const newIngredient = { ...ingredient };
+            newIngredient.ingredientKey = uuid();
+            boundBurgerConstructorActions.addIngredient(newIngredient);
             boundBurgerIngredientsActions.increaseCounter(itemId._id);
         }
     };
@@ -55,7 +54,12 @@ export default function BurgerConstructor() {
                     return sum + elem.price;
                 }, 0)
             );
-        } else return 0;
+        } else if (fillings.length !== 0) {
+            return fillings.reduce((sum, elem) => {
+                return sum + elem.price;
+            }, 0);
+        }
+        return 0;
     }, [fillings, bun]);
 
     const [isVisible, setIsVisible] = useState(false);
@@ -81,9 +85,14 @@ export default function BurgerConstructor() {
 
     return (
         <>
-            {bun !== null ? (
+            {bun !== null || fillings.length !== 0 ? (
                 <div className='mt-25 pl-4 pr-4'>
-                    <CustomConstructorElement isBun={true} ingredient={bun} />
+                    {bun !== null && (
+                        <CustomConstructorElement
+                            isBun={true}
+                            ingredient={bun}
+                        />
+                    )}
                     <div
                         ref={dropTarget}
                         className={`${BurgerConstructorStyles.container} ${isActiveCont}`}
@@ -99,11 +108,13 @@ export default function BurgerConstructor() {
                             );
                         })}
                     </div>
-                    <CustomConstructorElement
-                        isBun={true}
-                        position='bottom'
-                        ingredient={bun}
-                    />
+                    {bun !== null && (
+                        <CustomConstructorElement
+                            isBun={true}
+                            position='bottom'
+                            ingredient={bun}
+                        />
+                    )}
                     <div
                         className={
                             BurgerConstructorStyles.buttonWrapper + " mt-10"
@@ -118,6 +129,7 @@ export default function BurgerConstructor() {
                             htmlType='submit'
                             extraClass='ml-10'
                             size='large'
+                            disabled={bun === null}
                         >
                             Оформить заказ
                         </Button>
@@ -133,6 +145,7 @@ export default function BurgerConstructor() {
                     </p>
                 </div>
             )}
+
             {isVisible && (
                 <Modal title={""} onClose={close}>
                     <OrderDetails />
