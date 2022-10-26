@@ -1,5 +1,5 @@
 .container {
-    max-height: 43vh;
+    height: 43vh;
     overflow-y: scroll;
 
     display: flex;
@@ -7,8 +7,19 @@
     row-gap: 16px;
 }
 
+.infoWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgb(61, 44, 76);
+}
+
 .buttonWrapper {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.active {
+    border: 5px solid rgba(76, 76, 255, 1);
 }

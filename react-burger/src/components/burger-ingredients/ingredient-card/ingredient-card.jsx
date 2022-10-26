@@ -4,33 +4,37 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCardStyles from "./ingredient-card.module.css";
 import PropTypes from "prop-types";
-import { useState } from "react";
-
+import { useSelector } from "react-redux";
 import { Modal } from "../../modal/modal";
 import { IngredientDetails } from "../../ingredient-details/ingredient-details";
+import { useDrag } from "react-dnd/dist/hooks";
+import { boundIngredientModal } from "../../../services/actions/ingredient-modal";
 
 export default function IngredientCard({ ingredient }) {
-    // eslint-disable-next-line
-    const [quantity, setQuantity] = useState(0);
-    const [isVisible, setIsVisible] = useState(false);
+    const { currentIngredient } = useSelector((store) => store.ingredientModal);
 
-    const { image, price, name } = ingredient;
+    const { _id, image, price, name, counter } = ingredient;
+
+    const [{}, dragRef] = useDrag({
+        type: "ingredient",
+        item: { _id },
+    });
 
     const close = (e) => {
-        setIsVisible(false);
+        boundIngredientModal.deleteIngredient();
     };
 
     const show = (e) => {
-        setIsVisible(true);
+        boundIngredientModal.setIngredient(ingredient);
     };
 
     return (
-        <>
+        <div ref={dragRef}>
             <div className={IngredientCardStyles.card + " p-4"} onClick={show}>
-                {quantity > 0 && (
+                {counter > 0 && (
                     <Counter
                         extraClass={IngredientCardStyles.counter}
-                        count={quantity}
+                        count={counter}
                     />
                 )}
                 <img src={image} alt='Ингредиент' />
@@ -46,12 +50,12 @@ export default function IngredientCard({ ingredient }) {
                 </div>
                 <p className='text text_type_main-default'>{name}</p>
             </div>
-            {isVisible && (
+            {currentIngredient !== null && (
                 <Modal title={"Детали ингредиента"} onClose={close}>
-                    <IngredientDetails ingredient={ingredient} />
+                    <IngredientDetails />
                 </Modal>
             )}
-        </>
+        </div>
     );
 }
 
