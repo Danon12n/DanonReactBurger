@@ -18,23 +18,21 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 bun: action.payload,
             };
         case ADD_CONSTRUCTOR_INGREDIENT:
+            const newIngredient = action.payload.ingredient;
+            newIngredient.ingredientKey = action.payload.ingredientKey;
             return {
                 ...state,
-                fillings: [...state.fillings, action.payload],
+                fillings: [...state.fillings, newIngredient],
             };
         case DELETE_CONSTRUCTOR_INGREDIENT:
             return {
                 ...state,
                 fillings: [
-                    ...state.fillings.filter((elem, i) => {
-                        if (action.payload !== i) return elem;
-                    }),
+                    ...state.fillings.filter((elem, i) => action.payload !== i),
                 ],
             };
         case SWAP_CONSTRUCTOR_INGREDIENTS:
-            const new_fillings = state.fillings.map((el) => {
-                return el;
-            });
+            const new_fillings = [...state.fillings];
             const dragCard = new_fillings[action.payload.dragIndex];
             new_fillings.splice(action.payload.dragIndex, 1);
             new_fillings.splice(action.payload.hoverIndex, 0, dragCard);

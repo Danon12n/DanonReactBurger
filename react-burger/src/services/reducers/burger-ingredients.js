@@ -38,7 +38,10 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
             };
         case INCREASE_INGREDIENT_COUNTER:
             const res1 = state.ingredients.map((elem) => {
-                if (elem._id === action.payload) elem.counter++;
+                if (elem._id === action.payload) {
+                    elem.counter++;
+                    if (elem.type === "bun") elem.counter++;
+                }
 
                 return elem;
             });
@@ -51,7 +54,10 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ...state,
                 ingredients: [
                     ...state.ingredients.map((elem) => {
-                        if (elem._id === action.payload) elem.counter--;
+                        if (elem._id === action.payload) {
+                            elem.counter--;
+                            if (elem.type === "bun") elem.counter--;
+                        }
                         return elem;
                     }),
                 ],
@@ -60,13 +66,3 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
             return state;
     }
 };
-
-// const initialState = {};
-
-// export const burgerIngredients = (state = initialState, action) => {
-//     switch (action.type) {
-
-//         default:
-//             return state;
-//     }
-// };

@@ -36,16 +36,14 @@ export const boundBurgerIngredientsActions = bindActionCreators(
 );
 
 export function getIngredientsAction() {
-    return function (dispatch) {
-        boundBurgerIngredientsActions.request();
+    boundBurgerIngredientsActions.request();
 
-        getIngredients()
-            .then((data) => {
-                boundBurgerIngredientsActions.success(data);
-            })
-            .catch(() => {
-                alert("Возникла ошибка при загрузк ингедиентов");
-                boundBurgerIngredientsActions.failed();
-            });
-    };
+    getIngredients()
+        .then((data) => {
+            boundBurgerIngredientsActions.success(data);
+        })
+        .catch(() => {
+            alert("Возникла ошибка при загрузке ингедиентов");
+            boundBurgerIngredientsActions.failed();
+        });
 }

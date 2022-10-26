@@ -29,11 +29,14 @@ export default function BurgerConstructor() {
             boundBurgerIngredientsActions.increaseCounter(itemId._id);
             boundBurgerIngredientsActions.decreaseCounter(bun._id);
         } else {
-            boundBurgerConstructorActions.addIngredient(ingredient);
+            const ingredientKey = uuid();
+            boundBurgerConstructorActions.addIngredient({
+                ingredient,
+                ingredientKey,
+            });
             boundBurgerIngredientsActions.increaseCounter(itemId._id);
         }
     };
-
     const [{ isHover }, dropTarget] = useDrop({
         accept: "ingredient",
         drop(itemId) {
@@ -88,7 +91,7 @@ export default function BurgerConstructor() {
                         {fillings.map((ingredient, i) => {
                             return (
                                 <CustomConstructorElement
-                                    //key={ingredient.key}
+                                    key={ingredient.ingredientKey}
                                     isBun={false}
                                     index={i}
                                     ingredient={ingredient}

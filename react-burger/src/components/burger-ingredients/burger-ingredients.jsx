@@ -1,15 +1,13 @@
 import BurgerIngredientsStyles from "./burger-ingredients.module.css";
 import { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 
 export default function BurgerIngredients() {
-    const dispatch = useDispatch();
-
     useEffect(() => {
-        dispatch(getIngredientsAction());
+        getIngredientsAction();
     }, []);
 
     const [current, setCurrent] = useState("");

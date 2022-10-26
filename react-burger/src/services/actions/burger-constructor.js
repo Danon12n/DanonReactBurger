@@ -11,9 +11,9 @@ const doUpdateConstructorBun = (bun) => ({
     type: UPDATE_CONSTRUCTOR_BUN,
     payload: bun,
 });
-const doAddConstructorIngredient = (ingredient) => ({
+const doAddConstructorIngredient = (payload) => ({
     type: ADD_CONSTRUCTOR_INGREDIENT,
-    payload: ingredient,
+    payload,
 });
 const doSwapConstructorIngredients = (payload) => ({
     type: SWAP_CONSTRUCTOR_INGREDIENTS,

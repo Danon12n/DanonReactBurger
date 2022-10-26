@@ -16,6 +16,10 @@ export default function CustomConstructorElement({
     index,
     ingredient,
 }) {
+    const deleteIngredient = (e) => {
+        boundBurgerConstructorActions.deleteIngredient(index);
+        boundBurgerIngredientsActions.decreaseCounter(ingredient._id);
+    };
     const ref = useRef();
 
     const [{ handlerId }, drop] = useDrop({
@@ -91,12 +95,7 @@ export default function CustomConstructorElement({
                 text={ingredient.name}
                 price={ingredient.price}
                 thumbnail={ingredient.image}
-                handleClose={(e) => {
-                    boundBurgerConstructorActions.deleteIngredient(index);
-                    boundBurgerIngredientsActions.decreaseCounter(
-                        ingredient._id
-                    );
-                }}
+                handleClose={deleteIngredient}
             />
         </div>
     );
