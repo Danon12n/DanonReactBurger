@@ -1,34 +1,45 @@
 import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import { DndProvider } from "react-dnd";
-import { useSelector } from "react-redux";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ConstructorPage } from "../../pages/constructor/constructor";
+import { LoginPage } from "../../pages/login/login";
+import { RegisterPage } from "../../pages/register/register";
+import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
+import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
+import { ProfilePage } from "../../pages/profile/profile";
 
 function App() {
     return (
-        <div className={AppStyles.App}>
-            <AppHeader />
-            <DndProvider backend={HTML5Backend}>
-                <div className={AppStyles.wrapper}>
-                    <BurgerIngredients />
-                    <BurgerConstructor />
-                </div>
-            </DndProvider>
-        </div>
+        <Router>
+            <div className={AppStyles.App}>
+                <AppHeader />
+                <Switch>
+                    <Route path='/' exact>
+                        <ConstructorPage />
+                    </Route>
+                    <Route path='/login' exact>
+                        <LoginPage />
+                    </Route>
+                    <Route path='/register' exact>
+                        <RegisterPage />
+                    </Route>
+                    <Route path='/forgot-password' exact>
+                        <ForgotPasswordPage />
+                    </Route>
+                    <Route path='/reset-password' exact>
+                        <ResetPasswordPage />
+                    </Route>
+                    <Route path='/profile' exact>
+                        <ProfilePage />
+                    </Route>
+                    <Route path='/ingredients/:id' exact></Route>
+                    <Route>
+                        <p>404 PAGE</p>
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
     );
 }
 
 export default App;
-
-// {ingredientsFailed ? (
-//     <p>ERROR</p>
-// ) : ingredientsRequest ? (
-//     <h1 className='text text_type_main-large'>Идет загрузка...</h1>
-// ) : (
-//     <div className={AppStyles.wrapper}>
-//         <BurgerIngredients />
-//         <BurgerConstructor />
-//     </div>
-// )}

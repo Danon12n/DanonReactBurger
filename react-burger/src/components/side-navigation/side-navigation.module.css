@@ -1,0 +1,20 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.navItem {
+    text-decoration: none;
+    color: #8585ad;
+}
+
+.active {
+    color: #f2f2f3;
+}
+
+.hint {
+    color: #8585ad;
+
+    opacity: 0.4;
+}
