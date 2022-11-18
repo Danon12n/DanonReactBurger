@@ -6,7 +6,7 @@ import NavItemStyles from "./nav-item.module.css";
 export default function NavItem({ props }) {
     return (
         <Link
-            to={{ pathname: "/profile" }}
+            to={{ pathname: props.path }}
             className={NavItemStyles.navItem + " pl-4 pr-4"}
         >
             {props.icon}

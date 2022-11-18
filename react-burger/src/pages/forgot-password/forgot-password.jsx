@@ -1,17 +1,47 @@
 import styles from "./forgot-password.module.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { ResetPassword } from "../../utils/user-api";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import {
     Button,
     EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
+import { boundUser } from "../../services/actions/users";
 
 const ForgotPasswordPage = function () {
     const [email, setEmail] = React.useState("");
+
     const onChange = (e) => {
         setEmail(e.target.value);
     };
-    return (
+
+    const dispatch = useDispatch();
+
+    const resetPass = () => {
+        ResetPassword({ email: email })
+            .then((data) => {
+                alert(data.message);
+                if (data.success){
+                    dispatch(boundUser.isCodeSent(true));
+                } 
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const location = useLocation();
+    const { isAuthed, isCodeSent } = useSelector((store) => store.users);
+
+    if (isAuthed) {
+        return (
+            <Redirect
+                // Если объект state не является undefined, вернём пользователя назад.
+                to={location.state?.from || "/"}
+            />
+        );
+    }
+    return !isCodeSent ? (
         <div className={styles.wrapper}>
             <div className={styles.wrapper}>
                 <p className='text text_type_main-medium mb-6'>
@@ -25,7 +55,11 @@ const ForgotPasswordPage = function () {
                     placeholder='Укажите e-mail'
                 />
 
-                <Button htmltype='button' extraClass='mb-20'>
+                <Button
+                    onClick={resetPass}
+                    htmlType='button'
+                    extraClass='mb-20'
+                >
                     Восстановить
                 </Button>
                 <div className={styles.linkWrapper}>
@@ -41,6 +75,8 @@ const ForgotPasswordPage = function () {
                 </div>
             </div>
         </div>
+    ) : (
+        <Redirect to='/reset-password' />
     );
 };
 export { ForgotPasswordPage };

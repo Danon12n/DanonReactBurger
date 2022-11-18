@@ -6,47 +6,72 @@ import {
     Input,
     Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
+import { registerUserAction } from "../../services/actions/users";
+import { useDispatch, useSelector } from "react-redux";
 
 const RegisterPage = function () {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [firstName, setFirstName] = React.useState("");
-    const onChange = (e) => {
-        setEmail(e.target.value);
+    const [userInfo, setUserInfo] = React.useState({
+        email: "",
+        name: "",
+        password: "",
+    });
+    
+    const dispatch = useDispatch();
+
+    const onChageField = (e) => {
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: e.target.value,
+        });
     };
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
+
+    const onRegisterClicked = (e) => {
+        dispatch(registerUserAction(userInfo));
     };
-    const onFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
-    return (
+
+    const location = useLocation();
+    const { isAuthed } = useSelector((store) => store.users);
+
+    if (isAuthed) {
+        return (
+            <Redirect
+                // Если объект state не является undefined, вернём пользователя назад.
+                to={location.state?.from || "/"}
+            />
+        );
+    }
+
+    return !isAuthed ? (
         <div className={styles.wrapper}>
             <p className='text text_type_main-medium mb-6'>Регистрация</p>
             <Input
                 extraClass='mb-6'
-                name='firstName'
-                value={firstName}
-                onChange={onFirstNameChange}
+                name='name'
+                value={userInfo.name}
+                onChange={onChageField}
                 placeholder='Имя'
             />
             <EmailInput
                 extraClass='mb-6'
                 name='email'
-                value={email}
-                onChange={onChange}
+                value={userInfo.email}
+                onChange={onChageField}
                 placeholder='E-mail'
             />
             <PasswordInput
                 extraClass='mb-6'
                 placeholder='Пароль'
                 name='password'
-                value={password}
-                onChange={onChangePassword}
+                value={userInfo.password}
+                onChange={onChageField}
             />
 
-            <Button htmltype='button' extraClass='mb-20'>
+            <Button
+                onClick={onRegisterClicked}
+                htmlType='button'
+                extraClass='mb-20'
+            >
                 Зарегистрироваться
             </Button>
             <div className={styles.linkWrapper}>
@@ -61,6 +86,8 @@ const RegisterPage = function () {
                 </Link>
             </div>
         </div>
+    ) : (
+        <p>Loading...</p>
     );
 };
 export { RegisterPage };

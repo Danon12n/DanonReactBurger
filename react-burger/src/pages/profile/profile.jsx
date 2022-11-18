@@ -1,26 +1,49 @@
 import styles from "./profile.module.css";
-import React from "react";
+import React, { useEffect } from "react";
 import {
     PasswordInput,
     EmailInput,
     Input,
+    Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
 import { SideNavigation } from "../../components/side-navigation/side-navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { useAuth } from "../../hooks/useAuth";
+import {
+    boundUser,
+    getUserAction,
+    updateUserInfoAction,
+} from "../../services/actions/users";
 
 const ProfilePage = function () {
-    const [email, setEmail] = React.useState("");
+    const { user } = useSelector((store) => store.users);
+    const dispatch = useDispatch();
     const [password, setPassword] = React.useState("");
-    const [firstName, setFirstName] = React.useState("");
-    const onChange = (e) => {
-        setEmail(e.target.value);
+
+    const { getUser } = useAuth();
+
+    useEffect(() => {
+        getUser();
+    }, []);
+
+    const onChangeEmail = (e) => {
+        dispatch(boundUser.setUserEmail(e.target.value));
     };
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     };
-    const onFirstNameChange = (e) => {
-        setFirstName(e.target.value);
+    const onChangeName = (e) => {
+        dispatch(boundUser.setUserName(e.target.value));
     };
+
+    const onCancelClick = (e) => {
+        dispatch(getUserAction());
+    };
+
+    const onSaveClick = (e) => {
+        dispatch(updateUserInfoAction(user.email, user.name));
+    };
+
     return (
         <div className={styles.wrapper}>
             <SideNavigation />
@@ -28,18 +51,18 @@ const ProfilePage = function () {
                 <Input
                     extraClass='mb-6'
                     icon='EditIcon'
-                    name='firstName'
-                    value={firstName}
-                    onChange={onFirstNameChange}
-                    placeholder='Имя'
+                    name='name'
+                    value={user.name}
+                    onChange={onChangeName}
+                    placeholder={"Имя"}
                 />
                 <EmailInput
                     extraClass='mb-6'
                     icon='EditIcon'
                     name='email'
-                    value={email}
-                    onChange={onChange}
-                    placeholder='Логин'
+                    value={user.email}
+                    onChange={onChangeEmail}
+                    placeholder={"Логин"}
                 />
                 <PasswordInput
                     extraClass='mb-6'
@@ -49,6 +72,22 @@ const ProfilePage = function () {
                     value={password}
                     onChange={onChangePassword}
                 />
+                <div className={styles.buttonsWrapper}>
+                    <Button
+                        onClick={onCancelClick}
+                        type='secondary'
+                        htmlType='button'
+                    >
+                        Отмена
+                    </Button>
+                    <Button
+                        onClick={onSaveClick}
+                        type='primary'
+                        htmlType='button'
+                    >
+                        Сохранить
+                    </Button>
+                </div>
             </div>
         </div>
     );

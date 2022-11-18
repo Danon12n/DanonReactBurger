@@ -1,5 +1,8 @@
 import styles from "./reset-password.module.css";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { SetNewPassword } from "../../utils/user-api";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import {
     Button,
     PasswordInput,
@@ -10,13 +13,46 @@ import React from "react";
 const ResetPasswordPage = function () {
     const [code, setCode] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [toggleRedirect, setToggleRedirect] = React.useState(false);
     const onCodeChange = (e) => {
         setCode(e.target.value);
     };
     const onChangePassword = (e) => {
         setPassword(e.target.value);
     };
-    return (
+
+    const onSaveClick = (e) => {
+        const newPass = {
+            password: password,
+            token: code,
+        };
+        SetNewPassword(newPass)
+            .then((data) => {
+                alert(data.message);
+                setToggleRedirect(true);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const location = useLocation();
+    const { isAuthed, isCodeSent } = useSelector((store) => store.users);
+
+    if (isAuthed) {
+        return (
+            <Redirect
+                // Если объект state не является undefined, вернём пользователя назад.
+                to={location.state?.from || "/"}
+            />
+        );
+    }
+
+    if (!isCodeSent) {
+        return <Redirect to={"/forgot-password"} />;
+    }
+
+    return !toggleRedirect ? (
         <div className={styles.wrapper}>
             <div className={styles.wrapper}>
                 <p className='text text_type_main-medium mb-6'>
@@ -37,7 +73,11 @@ const ResetPasswordPage = function () {
                     placeholder='Введите код из письма'
                 />
 
-                <Button htmltype='button' extraClass='mb-20'>
+                <Button
+                    onClick={onSaveClick}
+                    htmlType='button'
+                    extraClass='mb-20'
+                >
                     Сохранить
                 </Button>
                 <div className={styles.linkWrapper}>
@@ -53,6 +93,8 @@ const ResetPasswordPage = function () {
                 </div>
             </div>
         </div>
+    ) : (
+        <Redirect to='/login' />
     );
 };
 export { ResetPasswordPage };

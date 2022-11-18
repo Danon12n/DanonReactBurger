@@ -9,8 +9,12 @@ import AppHeaderStyles from "./app-header.module.css";
 import NavItem from "./nav-item/nav-item";
 
 const NavItems = [
-    { icon: <BurgerIcon type='secondary' />, text: "Конструкторная" },
-    { icon: <ListIcon type='secondary' />, text: "Лента заказов" },
+    {
+        icon: <BurgerIcon type='secondary' />,
+        text: "Конструкторная",
+        path: "/",
+    },
+    { icon: <ListIcon type='secondary' />, text: "Лента заказов", path: "/" },
 ];
 
 export default function AppHeader() {
@@ -28,6 +32,7 @@ export default function AppHeader() {
                 props={{
                     icon: <ProfileIcon type='secondary' />,
                     text: "Личный кабинет",
+                    path: "/profile",
                 }}
             ></NavItem>
         </header>

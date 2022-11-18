@@ -13,6 +13,7 @@ const SideNavigation = function () {
             {data.map((el) => {
                 return (
                     <NavLink
+                        key={el.text}
                         to={{ pathname: el.path }}
                         className={(isActive) => {
                             return `${styles.navItem} ${
