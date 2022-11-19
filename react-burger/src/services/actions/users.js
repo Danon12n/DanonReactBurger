@@ -210,22 +210,22 @@ export function logoutUserAction() {
     };
 }
 export function updateTokenAction() {
-    return function () {
-        boundUser.updateTokenRequest();
-        const token = {
-            token: getCookie("refreshToken"),
-        };
-        updateToken(token)
-            .then((data) => {
-                console.log(data);
-                boundUser.updateTokenSuccess(data);
-                setTokens(data.accessToken, data.refreshToken);
-            })
-            .catch((err) => {
-                console.log(err);
-                boundUser.updateTokenFailed();
-            });
+    const token = {
+        token: getCookie("refreshToken"),
     };
+    updateToken(token)
+        .then((data) => {
+            setTokens(data.accessToken, data.refreshToken);
+            console.log("tokens updated");
+        })
+        .catch((err) => {
+            if (err.message === "Token is invalid") {
+                console.log("refresh token is invalid. logging out");
+                deleteTokens();
+                boundUser.setAuthed(false);
+            }
+            console.log(err);
+        });
 }
 export function getUserAction() {
     return function () {
@@ -239,10 +239,11 @@ export function getUserAction() {
                 if (err.message === "jwt expired") {
                     console.log("jwt expired, tring to update tokens");
                     updateTokenAction();
+                } else {
+                    console.log("other error, logging out");
+                    boundUser.getUserFailed();
+                    deleteTokens();
                 }
-
-                boundUser.getUserFailed();
-                deleteTokens();
             });
     };
 }

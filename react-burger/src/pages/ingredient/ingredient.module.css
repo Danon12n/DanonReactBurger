@@ -5,9 +5,3 @@
     flex-direction: column;
     margin-top: 180px;
 }
-
-.linkWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}

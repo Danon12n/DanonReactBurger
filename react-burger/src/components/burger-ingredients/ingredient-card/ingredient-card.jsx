@@ -21,10 +21,12 @@ export default function IngredientCard({ ingredient }) {
     });
 
     const close = (e) => {
+        window.history.pushState(null, "", "/");
         boundIngredientModal.deleteIngredient();
     };
 
     const show = (e) => {
+        window.history.pushState(null, "", `/ingredients/${_id}`);
         boundIngredientModal.setIngredient(ingredient);
     };
 

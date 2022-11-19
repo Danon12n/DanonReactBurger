@@ -9,7 +9,7 @@ export const ingredientModalReducer = (state = initialState, action) => {
         case SET_CURRENT_INGREDIENT:
             return {
                 ...state,
-                currentIngredient: action.payload,
+                currentIngredient: { ...action.payload },
             };
         case DELETE_CURRENT_INGREDIENT:
             return {

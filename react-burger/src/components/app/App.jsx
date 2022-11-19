@@ -1,7 +1,7 @@
 import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ConstructorPage } from "../../pages/constructor/constructor";
 import { LoginPage } from "../../pages/login/login";
@@ -13,9 +13,11 @@ import { TestPage } from "../../pages/test/test";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookie";
 import { boundUser, getUserAction } from "../../services/actions/users";
+import { IngredientPage } from "../../pages/ingredient/ingredient";
 
 function App() {
     const dispatch = useDispatch();
+    const { currentIngredient } = useSelector((store) => store.ingredientModal);
     useEffect(() => {
         const accessToken = getCookie("token");
         if (accessToken !== null && accessToken !== undefined) {
@@ -46,11 +48,12 @@ function App() {
                     <ProtectedRoute path='/profile' exact>
                         <ProfilePage />
                     </ProtectedRoute>
-
                     <Route path='/test' exact>
                         <TestPage />
                     </Route>
-                    <Route path='/ingredients/:id' exact></Route>
+                    <Route path='/ingredients/:id' exact>
+                        <IngredientPage />
+                    </Route>
                     <Route>
                         <p>404 PAGE</p>
                     </Route>

@@ -85,36 +85,3 @@ const LoginPage = function () {
     );
 };
 export { LoginPage };
-
-// pages/login.jsx
-// Импортируем все необходимые компоненты
-// export function LoginPage() {
-//     let auth = useAuth();
-
-//     const [form, setValue] = useState({ email: '', password: '' });
-
-//     const onChange = e => {
-//       setValue({ ...form, [e.target.name]: e.target.value });
-//     };
-
-//     let login = useCallback(
-//       e => {
-//         e.preventDefault();
-//         auth.signIn(form);
-//       },
-//       [auth, form]
-//     );
-
-//     if (auth.user) {
-//       return (
-//         <Redirect
-//                   // Если объект state не является undefined, вернём пользователя назад.
-//           to={ state?.from || '/' }
-//         />
-//       );
-//     }
-
-//     return (
-//         // ...
-//     );
-//   }
