@@ -1,7 +1,8 @@
 import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ConstructorPage } from "../../pages/constructor/constructor";
 import { LoginPage } from "../../pages/login/login";
@@ -9,18 +10,22 @@ import { RegisterPage } from "../../pages/register/register";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
 import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
 import { ProfilePage } from "../../pages/profile/profile";
-import { TestPage } from "../../pages/test/test";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookie";
-import { boundUser, getUserAction } from "../../services/actions/users";
+import {
+    boundUser,
+    getUserAction,
+    logoutUserAction,
+} from "../../services/actions/users";
 import { IngredientPage } from "../../pages/ingredient/ingredient";
+import { OrdersPage } from "../../pages/orders/orders";
+import { NotFoundPage } from "../../pages/not-found-page/not-found-page";
 
 function App() {
     const dispatch = useDispatch();
-    const { currentIngredient } = useSelector((store) => store.ingredientModal);
     useEffect(() => {
         const accessToken = getCookie("token");
-        if (accessToken !== null && accessToken !== undefined) {
+        if (accessToken) {
             dispatch(boundUser.setAuthed(true));
             dispatch(getUserAction());
         }
@@ -33,29 +38,33 @@ function App() {
                     <Route path='/' exact>
                         <ConstructorPage />
                     </Route>
-                    <Route path='/login' exact>
+                    <ProtectedRoute path='/login' exact>
                         <LoginPage />
-                    </Route>
-                    <Route path='/register' exact>
+                    </ProtectedRoute>
+                    <ProtectedRoute path='/register' exact>
                         <RegisterPage />
-                    </Route>
-                    <Route path='/forgot-password' exact>
+                    </ProtectedRoute>
+                    <ProtectedRoute path='/forgot-password' exact>
                         <ForgotPasswordPage />
-                    </Route>
-                    <Route path='/reset-password' exact>
+                    </ProtectedRoute>
+                    <ProtectedRoute path='/reset-password' exact>
                         <ResetPasswordPage />
-                    </Route>
-                    <ProtectedRoute path='/profile' exact>
+                    </ProtectedRoute>
+                    <ProtectedRoute isRequiredAuthed path='/profile' exact>
                         <ProfilePage />
                     </ProtectedRoute>
-                    <Route path='/test' exact>
-                        <TestPage />
-                    </Route>
+                    <ProtectedRoute
+                        isRequiredAuthed
+                        path='/profile/orders'
+                        exact
+                    >
+                        <OrdersPage />
+                    </ProtectedRoute>
                     <Route path='/ingredients/:id' exact>
                         <IngredientPage />
                     </Route>
                     <Route>
-                        <p>404 PAGE</p>
+                        <NotFoundPage />
                     </Route>
                 </Switch>
             </div>

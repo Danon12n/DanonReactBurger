@@ -4,61 +4,58 @@ import {
     PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React from "react";
 import { authUserAction } from "../../services/actions/users";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const LoginPage = function () {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const { isAuthed } = useSelector((store) => store.users);
+    const [userInfo, setUserInfo] = React.useState({
+        email: "",
+        password: "",
+    });
     const dispatch = useDispatch();
-    const location = useLocation();
-    const onChange = (e) => {
-        setEmail(e.target.value);
+    const onChageField = (e) => {
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: e.target.value,
+        });
     };
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+        dispatch(authUserAction(userInfo));
     };
     const onAuthClick = (e) => {
-        const userInfo = {
-            email: email,
-            password: password,
-        };
         dispatch(authUserAction(userInfo));
     };
 
-    if (isAuthed) {
-        console.log(location.state?.from);
-        return (
-            <Redirect
-                // Если объект state не является undefined, вернём пользователя назад.
-                to={location.state?.from || "/"}
-            />
-        );
-    }
     return (
         <div className={styles.wrapper}>
             <p className='text text_type_main-medium mb-6'>Вход</p>
-            <EmailInput
-                extraClass='mb-6'
-                name='email'
-                value={email}
-                onChange={onChange}
-                placeholder='E-mail'
-            />
-            <PasswordInput
-                extraClass='mb-6'
-                placeholder='Пароль'
-                name='password'
-                value={password}
-                onChange={onChangePassword}
-            />
+            <form className={styles.form} onSubmit={onFormSubmit}>
+                <EmailInput
+                    extraClass='mb-6'
+                    name='email'
+                    value={userInfo.email}
+                    onChange={onChageField}
+                    placeholder='E-mail'
+                />
+                <PasswordInput
+                    extraClass='mb-6'
+                    placeholder='Пароль'
+                    name='password'
+                    value={userInfo.password}
+                    onChange={onChageField}
+                />
 
-            <Button onClick={onAuthClick} htmlType='button' extraClass='mb-20'>
-                Войти
-            </Button>
+                <Button
+                    onClick={onAuthClick}
+                    htmlType='submit'
+                    extraClass='mb-20'
+                >
+                    Войти
+                </Button>
+            </form>
             <div className={styles.linkWrapper}>
                 <p className='text text_type_main-default text_color_inactive'>
                     Вы — новый пользователь?

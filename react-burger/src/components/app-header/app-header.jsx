@@ -14,7 +14,11 @@ const NavItems = [
         text: "Конструкторная",
         path: "/",
     },
-    { icon: <ListIcon type='secondary' />, text: "Лента заказов", path: "/" },
+    {
+        icon: <ListIcon type='secondary' />,
+        text: "Лента заказов",
+        path: "/profile/orders",
+    },
 ];
 
 export default function AppHeader() {

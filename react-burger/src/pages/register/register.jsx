@@ -6,9 +6,9 @@ import {
     Input,
     Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { registerUserAction } from "../../services/actions/users";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const RegisterPage = function () {
     const [userInfo, setUserInfo] = React.useState({
@@ -16,7 +16,7 @@ const RegisterPage = function () {
         name: "",
         password: "",
     });
-    
+
     const dispatch = useDispatch();
 
     const onChageField = (e) => {
@@ -26,54 +26,41 @@ const RegisterPage = function () {
         });
     };
 
-    const onRegisterClicked = (e) => {
+    const onSubmitForm = (e) => {
+        e.preventDefault();
         dispatch(registerUserAction(userInfo));
     };
 
-    const location = useLocation();
-    const { isAuthed } = useSelector((store) => store.users);
-
-    if (isAuthed) {
-        return (
-            <Redirect
-                // Если объект state не является undefined, вернём пользователя назад.
-                to={location.state?.from || "/"}
-            />
-        );
-    }
-
-    return !isAuthed ? (
+    return (
         <div className={styles.wrapper}>
             <p className='text text_type_main-medium mb-6'>Регистрация</p>
-            <Input
-                extraClass='mb-6'
-                name='name'
-                value={userInfo.name}
-                onChange={onChageField}
-                placeholder='Имя'
-            />
-            <EmailInput
-                extraClass='mb-6'
-                name='email'
-                value={userInfo.email}
-                onChange={onChageField}
-                placeholder='E-mail'
-            />
-            <PasswordInput
-                extraClass='mb-6'
-                placeholder='Пароль'
-                name='password'
-                value={userInfo.password}
-                onChange={onChageField}
-            />
+            <form className={styles.form} onSubmit={onSubmitForm}>
+                <Input
+                    extraClass='mb-6'
+                    name='name'
+                    value={userInfo.name}
+                    onChange={onChageField}
+                    placeholder='Имя'
+                />
+                <EmailInput
+                    extraClass='mb-6'
+                    name='email'
+                    value={userInfo.email}
+                    onChange={onChageField}
+                    placeholder='E-mail'
+                />
+                <PasswordInput
+                    extraClass='mb-6'
+                    placeholder='Пароль'
+                    name='password'
+                    value={userInfo.password}
+                    onChange={onChageField}
+                />
 
-            <Button
-                onClick={onRegisterClicked}
-                htmlType='button'
-                extraClass='mb-20'
-            >
-                Зарегистрироваться
-            </Button>
+                <Button htmlType='submit' extraClass='mb-20'>
+                    Зарегистрироваться
+                </Button>
+            </form>
             <div className={styles.linkWrapper}>
                 <p className='text text_type_main-default text_color_inactive'>
                     Уже зарегистрированы?
@@ -86,8 +73,6 @@ const RegisterPage = function () {
                 </Link>
             </div>
         </div>
-    ) : (
-        <p>Loading...</p>
     );
 };
 export { RegisterPage };

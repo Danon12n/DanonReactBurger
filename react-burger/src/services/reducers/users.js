@@ -19,14 +19,12 @@ import {
     UPDATE_USER_INFO_REQUEST,
     UPDATE_USER_INFO_FAILED,
     UPDATE_USER_INFO_SUCCESS,
-    SET_USER_EMAIL,
     SET_IS_CODE_SENT,
-    SET_USER_NAME,
 } from "../constant";
 
 const initialState = {
-    updateUseInfoRequest: false,
-    updateUseInfoFailed: false,
+    updateUserInfoRequest: false,
+    updateUserInfoFailed: false,
 
     getUserRequest: false,
     getUserFailed: false,
@@ -62,26 +60,16 @@ export const usersReducer = (state = initialState, action) => {
                 ...state,
                 isAuthed: action.payload,
             };
-        case SET_USER_EMAIL:
-            return {
-                ...state,
-                user: { ...state.user, email: action.payload },
-            };
-        case SET_USER_NAME:
-            return {
-                ...state,
-                user: { ...state.user, name: action.payload },
-            };
         case UPDATE_USER_INFO_REQUEST:
             return {
                 ...state,
-                updateUseInfoRequest: true,
-                updateUseInfoFailed: false,
+                updateUserInfoRequest: true,
+                updateUserInfoFailed: false,
             };
         case UPDATE_USER_INFO_SUCCESS:
             return {
                 ...state,
-                updateUseInfoRequest: false,
+                updateUserInfoRequest: false,
                 user: {
                     ...action.payload.user,
                 },
@@ -89,8 +77,8 @@ export const usersReducer = (state = initialState, action) => {
         case UPDATE_USER_INFO_FAILED:
             return {
                 ...state,
-                updateUseInfoRequest: false,
-                updateUseInfoFailed: true,
+                updateUserInfoRequest: false,
+                updateUserInfoFailed: true,
             };
         case GET_USER_REQUEST:
             return {

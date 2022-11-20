@@ -14,7 +14,6 @@ const IngredientPage = function () {
     );
     const { id } = useParams();
 
-    console.log(id);
     useEffect(() => {
         if (ingredients.length === 0 || ingredients === null) {
             getIngredientsAction();

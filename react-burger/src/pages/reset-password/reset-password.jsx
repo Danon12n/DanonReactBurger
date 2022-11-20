@@ -1,8 +1,7 @@
 import styles from "./reset-password.module.css";
 import { Link, Redirect } from "react-router-dom";
 import { SetNewPassword } from "../../utils/user-api";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
     Button,
     PasswordInput,
@@ -11,42 +10,35 @@ import {
 import React from "react";
 
 const ResetPasswordPage = function () {
-    const [code, setCode] = React.useState("");
-    const [password, setPassword] = React.useState("");
     const [toggleRedirect, setToggleRedirect] = React.useState(false);
-    const onCodeChange = (e) => {
-        setCode(e.target.value);
-    };
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
+    const [newPass, setNewPass] = React.useState({
+        password: "",
+        token: "",
+    });
+    const dispatch = useDispatch();
 
-    const onSaveClick = (e) => {
-        const newPass = {
-            password: password,
-            token: code,
-        };
-        SetNewPassword(newPass)
-            .then((data) => {
-                alert(data.message);
-                setToggleRedirect(true);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const onChageField = (e) => {
+        setNewPass({
+            ...newPass,
+            [e.target.name]: e.target.value,
+        });
     };
 
-    const location = useLocation();
-    const { isAuthed, isCodeSent } = useSelector((store) => store.users);
-
-    if (isAuthed) {
-        return (
-            <Redirect
-                // Если объект state не является undefined, вернём пользователя назад.
-                to={location.state?.from || "/"}
-            />
+    const onSubmitForm = (e) => {
+        e.preventDefault();
+        dispatch(
+            SetNewPassword(newPass)
+                .then((data) => {
+                    alert(data.message);
+                    setToggleRedirect(true);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         );
-    }
+    };
+
+    const { isCodeSent } = useSelector((store) => store.users);
 
     if (!isCodeSent) {
         return <Redirect to={"/forgot-password"} />;
@@ -58,28 +50,26 @@ const ResetPasswordPage = function () {
                 <p className='text text_type_main-medium mb-6'>
                     Восстановление пароля
                 </p>
-                <PasswordInput
-                    extraClass='mb-6'
-                    placeholder='Введите новый пароль'
-                    name='password'
-                    value={password}
-                    onChange={onChangePassword}
-                />
-                <Input
-                    extraClass='mb-6'
-                    name='code'
-                    value={code}
-                    onChange={onCodeChange}
-                    placeholder='Введите код из письма'
-                />
+                <form className={styles.form} onSubmit={onSubmitForm}>
+                    <PasswordInput
+                        extraClass='mb-6'
+                        placeholder='Введите новый пароль'
+                        name='password'
+                        value={newPass.password}
+                        onChange={onChageField}
+                    />
+                    <Input
+                        extraClass='mb-6'
+                        name='token'
+                        value={newPass.token}
+                        onChange={onChageField}
+                        placeholder='Введите код из письма'
+                    />
 
-                <Button
-                    onClick={onSaveClick}
-                    htmlType='button'
-                    extraClass='mb-20'
-                >
-                    Сохранить
-                </Button>
+                    <Button htmlType='submit' extraClass='mb-20'>
+                        Сохранить
+                    </Button>
+                </form>
                 <div className={styles.linkWrapper}>
                     <p className='text text_type_main-default text_color_inactive'>
                         Вспомнили пароль?

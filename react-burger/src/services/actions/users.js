@@ -21,8 +21,6 @@ import {
     UPDATE_USER_INFO_REQUEST,
     UPDATE_USER_INFO_FAILED,
     UPDATE_USER_INFO_SUCCESS,
-    SET_USER_EMAIL,
-    SET_USER_NAME,
     SET_IS_CODE_SENT,
 } from "../constant";
 import {
@@ -48,14 +46,6 @@ const doSetIsCodeSent = (status) => ({
 const doSetUserInfo = (userInfo) => ({
     type: SET_USER_INFO,
     payload: userInfo,
-});
-const doSetUserName = (name) => ({
-    type: SET_USER_NAME,
-    payload: name,
-});
-const doSetUserEmail = (email) => ({
-    type: SET_USER_EMAIL,
-    payload: email,
 });
 
 const doGetUserRequest = () => ({
@@ -124,9 +114,6 @@ const doUpdateTokenFailed = () => ({
 
 export const boundUser = bindActionCreators(
     {
-        setUserName: doSetUserName,
-        setUserEmail: doSetUserEmail,
-
         updateUserInfoRequest: doUpdateUserInfoRequest,
         updateUserInfoSuccess: doUpdateUserInfoSuccess,
         updateUserInfoFailed: doUpdateUserInfoFailed,
@@ -198,13 +185,11 @@ export function logoutUserAction() {
         };
         logoutUser(token)
             .then((data) => {
-                alert(data.message);
                 boundUser.logoutSuccess();
                 deleteTokens();
                 boundUser.setAuthed(false);
             })
             .catch((err) => {
-                alert("Возникла ошибка при выходе из аккаунта");
                 boundUser.logoutFailed();
             });
     };
@@ -242,6 +227,7 @@ export function getUserAction() {
                 } else {
                     console.log("other error, logging out");
                     boundUser.getUserFailed();
+                    boundUser.setAuthed(false);
                     deleteTokens();
                 }
             });

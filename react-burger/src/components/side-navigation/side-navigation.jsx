@@ -6,7 +6,7 @@ const SideNavigation = function () {
     const data = [
         { text: "Профиль", path: "/profile" },
         { text: "История Заказов", path: "/profile/orders" },
-        { text: "Выход", path: "/login" },
+        { text: "Выход", path: "/logout" },
     ];
     return (
         <div className={`${styles.wrapper} mr-15`}>

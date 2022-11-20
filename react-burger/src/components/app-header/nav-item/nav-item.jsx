@@ -1,17 +1,20 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import NavItemStyles from "./nav-item.module.css";
+import styles from "./nav-item.module.css";
 
 export default function NavItem({ props }) {
     return (
-        <Link
+        <NavLink
+            exact
             to={{ pathname: props.path }}
-            className={NavItemStyles.navItem + " pl-4 pr-4"}
+            className={(isActive) =>
+                `${styles.navItem} ${isActive ? styles.active : ""} pl-4 pr-4`
+            }
         >
             {props.icon}
             <p className='text text_type_main-small ml-2'>{props.text}</p>
-        </Link>
+        </NavLink>
     );
 }
 

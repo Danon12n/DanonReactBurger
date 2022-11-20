@@ -1,9 +1,12 @@
 .navItem {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+
+    text-decoration: none;
+    color: #8585ad;
 }
 
-.navItem p {
-    color: #8585AD;
+.active {
+    color: white;
 }
