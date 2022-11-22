@@ -1,5 +1,4 @@
 import styles from "./side-navigation.module.css";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 
 const SideNavigation = function () {
@@ -13,6 +12,7 @@ const SideNavigation = function () {
             {data.map((el) => {
                 return (
                     <NavLink
+                        exact
                         key={el.text}
                         to={{ pathname: el.path }}
                         className={(isActive) => {

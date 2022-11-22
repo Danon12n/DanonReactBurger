@@ -2,7 +2,6 @@ import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ConstructorPage } from "../../pages/constructor/constructor";
 import { LoginPage } from "../../pages/login/login";
@@ -12,14 +11,12 @@ import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
 import { ProfilePage } from "../../pages/profile/profile";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookie";
-import {
-    boundUser,
-    getUserAction,
-    logoutUserAction,
-} from "../../services/actions/users";
+import { boundUser, getUserAction } from "../../services/actions/users";
 import { IngredientPage } from "../../pages/ingredient/ingredient";
-import { OrdersPage } from "../../pages/orders/orders";
+import { OrdersLinePage } from "../../pages/orders-line/orders";
 import { NotFoundPage } from "../../pages/not-found-page/not-found-page";
+import { LogoutPage } from "../../pages/logout/logout";
+import { OrdersHistory } from "../orders-history/orders-history";
 
 function App() {
     const dispatch = useDispatch();
@@ -58,11 +55,18 @@ function App() {
                         path='/profile/orders'
                         exact
                     >
-                        <OrdersPage />
+                        <ProfilePage />
+                    </ProtectedRoute>
+                    <ProtectedRoute isRequiredAuthed path='/logout'>
+                        <LogoutPage />
+                    </ProtectedRoute>
+                    <ProtectedRoute isRequiredAuthed path='/orders' exact>
+                        <OrdersLinePage />
                     </ProtectedRoute>
                     <Route path='/ingredients/:id' exact>
                         <IngredientPage />
                     </Route>
+
                     <Route>
                         <NotFoundPage />
                     </Route>

@@ -190,6 +190,7 @@ export function logoutUserAction() {
                 boundUser.setAuthed(false);
             })
             .catch((err) => {
+                console.log(err);
                 boundUser.logoutFailed();
             });
     };
@@ -233,11 +234,11 @@ export function getUserAction() {
             });
     };
 }
-export function updateUserInfoAction(email, name) {
+export function updateUserInfoAction(userInfo) {
     return function () {
         boundUser.updateUserInfoRequest();
 
-        updateUserInfo({ email: email, name: name }, getCookie("token"))
+        updateUserInfo(userInfo, getCookie("token"))
             .then((data) => {
                 boundUser.updateUserInfoSuccess(data);
             })

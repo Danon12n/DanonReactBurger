@@ -17,7 +17,7 @@ const NavItems = [
     {
         icon: <ListIcon type='secondary' />,
         text: "Лента заказов",
-        path: "/profile/orders",
+        path: "/orders",
     },
 ];
 
