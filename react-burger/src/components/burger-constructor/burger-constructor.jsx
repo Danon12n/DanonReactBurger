@@ -13,9 +13,11 @@ import { boundBurgerConstructorActions } from "../../services/actions/burger-con
 import { boundBurgerIngredientsActions } from "../../services/actions/burger-ingredients";
 import { getOrderNumberAction } from "../../services/actions/order-modal";
 import { useDrop } from "react-dnd/dist/hooks/useDrop";
+import { Redirect } from "react-router-dom";
 
 export default function BurgerConstructor() {
     const dispatch = useDispatch();
+    const { isAuthed } = useSelector((store) => store.users);
 
     const ingredients = useSelector(
         (store) => store.burgerIngredients.ingredients
@@ -63,9 +65,13 @@ export default function BurgerConstructor() {
     }, [fillings, bun]);
 
     const [isVisible, setIsVisible] = useState(false);
+    const [toggleRedirect, setToggleRedirect] = useState(false);
 
     const close = (e) => {
         setIsVisible(false);
+    };
+    const redirectOnClick = () => {
+        setToggleRedirect(true);
     };
 
     const onCreateOrderClick = (e) => {
@@ -83,7 +89,7 @@ export default function BurgerConstructor() {
 
     const isActiveCont = isHover ? BurgerConstructorStyles.active : "";
 
-    return (
+    return !toggleRedirect ? (
         <>
             {bun !== null || fillings.length !== 0 ? (
                 <div className='mt-25 pl-4 pr-4'>
@@ -125,7 +131,9 @@ export default function BurgerConstructor() {
                         </p>
                         <CurrencyIcon />
                         <Button
-                            onClick={onCreateOrderClick}
+                            onClick={
+                                isAuthed ? onCreateOrderClick : redirectOnClick
+                            }
                             htmlType='submit'
                             extraClass='ml-10'
                             size='large'
@@ -152,5 +160,7 @@ export default function BurgerConstructor() {
                 </Modal>
             )}
         </>
+    ) : (
+        <Redirect to='/login' />
     );
 }

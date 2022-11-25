@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+.linkWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

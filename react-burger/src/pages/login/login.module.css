@@ -1,0 +1,29 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input {
+    padding: 20px 24px;
+    /* background: #2f2f37; */
+    background: transparent;
+
+    border: none;
+    border-radius: 40px;
+}
+
+.linkWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

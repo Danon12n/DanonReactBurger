@@ -1,0 +1,17 @@
+.inputForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 180px;
+}
+
+.buttonsWrapper {
+    display: flex;
+}

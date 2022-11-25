@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const IngredientDetails = function () {
     const { currentIngredient } = useSelector((store) => store.ingredientModal);
+    if (currentIngredient === null) return null;
     const components = [
         { name: "Калории,ккал", value: currentIngredient.calories },
         { name: "Белки, г", value: currentIngredient.proteins },
