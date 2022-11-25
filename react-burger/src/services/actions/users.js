@@ -148,7 +148,7 @@ export const boundUser = bindActionCreators(
 );
 
 export function registerUserAction(userInfo) {
-    return function () {
+
         boundUser.registerRequest();
         registerUser(userInfo)
             .then((data) => {
@@ -160,10 +160,9 @@ export function registerUserAction(userInfo) {
                 boundUser.registerFailed();
             });
     };
-}
 
 export function authUserAction(userInfo) {
-    return function () {
+
         boundUser.authRequest();
         authUser(userInfo)
             .then((data) => {
@@ -175,10 +174,10 @@ export function authUserAction(userInfo) {
                 boundUser.authFailed();
             });
     };
-}
+
 
 export function logoutUserAction() {
-    return function () {
+    
         boundUser.logoutRequest();
         const token = {
             token: `${getCookie("refreshToken")}`,
@@ -194,7 +193,7 @@ export function logoutUserAction() {
                 boundUser.logoutFailed();
             });
     };
-}
+
 export function updateTokenAction() {
     const token = {
         token: getCookie("refreshToken"),
@@ -214,14 +213,12 @@ export function updateTokenAction() {
         });
 }
 export function getUserAction() {
-    return function () {
         boundUser.getUserRequest();
         getUserInfo(getCookie("token"))
             .then((data) => {
                 boundUser.getUserSuccess(data);
             })
             .catch((err) => {
-                console.log(err);
                 if (err.message === "jwt expired") {
                     console.log("jwt expired, tring to update tokens");
                     updateTokenAction();
@@ -233,9 +230,9 @@ export function getUserAction() {
                 }
             });
     };
-}
+
 export function updateUserInfoAction(userInfo) {
-    return function () {
+    
         boundUser.updateUserInfoRequest();
 
         updateUserInfo(userInfo, getCookie("token"))
@@ -247,4 +244,4 @@ export function updateUserInfoAction(userInfo) {
                 boundUser.updateUserInfoFailed();
             });
     };
-}
+

@@ -21,7 +21,7 @@ const doIncreaseIngredientCounter = (id) => ({
 });
 const doDecreaseIngredientCounter = (id) => ({
     type: DECREASE_INGREDIENT_COUNTER,
-    payload: id,
+    payload: id, 
 });
 
 export const boundBurgerIngredientsActions = bindActionCreators(
