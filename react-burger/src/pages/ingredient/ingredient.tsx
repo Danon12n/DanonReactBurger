@@ -5,16 +5,9 @@ import { useSelector } from "react-redux";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 import { boundIngredientModal } from "../../services/actions/ingredient-modal";
 import { FC, useEffect } from "react";
-import {
-    TStore,
-    TStoreBurgerIngredients,
-    TStoreIngredientModal,
-} from "../../types/types";
+import { TStore, TStoreBurgerIngredients } from "../../types/types";
 
 const IngredientPage: FC = () => {
-    const { currentIngredient } = useSelector<TStore, TStoreIngredientModal>(
-        (store) => store.ingredientModal
-    );
     const { ingredients, ingredientsRequest } = useSelector<
         TStore,
         TStoreBurgerIngredients
@@ -31,17 +24,16 @@ const IngredientPage: FC = () => {
         if (ingredientsRequest === false) {
             const ingredient = ingredients.find((el) => {
                 if (el._id === id) return el;
+                return false;
             });
             boundIngredientModal.setIngredient(ingredient);
         }
     }, [ingredientsRequest]);
 
-    return currentIngredient ? (
+    return (
         <div className={styles.wrapper}>
             <IngredientDetails />
         </div>
-    ) : (
-        <p>Loading...</p>
     );
 };
 export { IngredientPage };

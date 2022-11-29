@@ -1,3 +1,8 @@
+.link {
+    text-decoration: none;
+    color: white;
+}
+
 .list {
     display: grid;
     grid-template-columns: 47% 47%;

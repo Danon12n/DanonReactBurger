@@ -1,6 +1,7 @@
 .wrapper {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    column-gap: 40px;
-    padding: 0 18%;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+
+    padding: 0 50px;
 }

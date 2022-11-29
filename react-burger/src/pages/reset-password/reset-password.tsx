@@ -1,6 +1,6 @@
 import styles from "./reset-password.module.css";
 import { Link, Redirect } from "react-router-dom";
-import { SetNewPassword } from "../../utils/user-api";
+import { setNewPassword } from "../../utils/user-api";
 import { useSelector } from "react-redux";
 import {
     Button,
@@ -8,30 +8,21 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, FC } from "react";
-import { TStore, TStoreUser } from "../../types/types";
+import { TServerAnswer, TStore, TStoreUser } from "../../types/types";
+import { useForm } from "../../hooks/useForm";
 
 const ResetPasswordPage: FC = () => {
     const [toggleRedirect, setToggleRedirect] = useState(false);
-    const [newPass, setNewPass] = useState({
-        password: "",
-        token: "",
-    });
-
-    const onChageField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPass({
-            ...newPass,
-            [e.target.name]: e.target.value,
-        });
-    };
+    const { values, handleChange } = useForm({ password: "", token: "" });
 
     const onSubmitForm = (e: React.FormEvent) => {
         e.preventDefault();
-        SetNewPassword(newPass)
-            .then((data) => {
+        setNewPassword(values)
+            .then((data: TServerAnswer) => {
                 alert(data.message);
                 setToggleRedirect(true);
             })
-            .catch((err) => {
+            .catch((err: Error) => {
                 console.log(err);
             });
     };
@@ -55,14 +46,14 @@ const ResetPasswordPage: FC = () => {
                         extraClass='mb-6'
                         placeholder='Введите новый пароль'
                         name='password'
-                        value={newPass.password}
-                        onChange={onChageField}
+                        value={values.password}
+                        onChange={handleChange}
                     />
                     <Input
                         extraClass='mb-6'
                         name='token'
-                        value={newPass.token}
-                        onChange={onChageField}
+                        value={values.token}
+                        onChange={handleChange}
                         placeholder='Введите код из письма'
                     />
 

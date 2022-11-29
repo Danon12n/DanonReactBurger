@@ -1,6 +1,6 @@
 import styles from "./forgot-password.module.css";
 import { Link } from "react-router-dom";
-import { ResetPassword } from "../../utils/user-api";
+import { resetPassword } from "../../utils/user-api";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import {
@@ -9,10 +9,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC } from "react";
 import { boundUser } from "../../services/actions/users";
-import { TStore, TStoreUser } from "../../types/types";
+import { TServerAnswer, TStore, TStoreUser } from "../../types/types";
+import { useForm } from "../../hooks/useForm";
 
 const ForgotPasswordPage: FC = () => {
-    const [email, setEmail] = React.useState("");
+
+    const { values, handleChange } = useForm({ email: "" });
 
     const { isCodeSent } = useSelector<TStore, TStoreUser>(
         (store) => store.users
@@ -20,20 +22,16 @@ const ForgotPasswordPage: FC = () => {
 
     const onSubmitForm = (e: React.FormEvent) => {
         e.preventDefault();
-        ResetPassword({ email: email })
-            .then((data) => {
+        resetPassword(values)
+            .then((data: TServerAnswer) => {
                 alert(data.message);
                 if (data.success) {
-                    console.log("here");
                     boundUser.isCodeSent(true);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err: Error) => console.log(err));
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
 
     return !isCodeSent ? (
         <div className={styles.wrapper}>
@@ -45,8 +43,8 @@ const ForgotPasswordPage: FC = () => {
                     <EmailInput
                         extraClass='mb-6'
                         name='email'
-                        value={email}
-                        onChange={onChange}
+                        value={values.email}
+                        onChange={handleChange}
                         placeholder='Укажите e-mail'
                     />
 

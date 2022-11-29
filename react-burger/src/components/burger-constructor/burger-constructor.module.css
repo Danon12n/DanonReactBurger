@@ -1,4 +1,5 @@
 .container {
+    max-width: 605px;
     height: 43vh;
     overflow-y: scroll;
 
@@ -8,6 +9,7 @@
 }
 
 .infoWrapper {
+    width: 605px;
     display: flex;
     align-items: center;
     justify-content: center;

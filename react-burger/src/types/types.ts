@@ -1,3 +1,8 @@
+export type TLocationState = {
+    background: Location;
+};
+
+
 export type TUser = {
     email: string;
     name: string;
@@ -56,15 +61,24 @@ export type TStore = {
 
 //API types
 
+export type TServerAnswer = {
+    success: boolean;
+    message?: string;
+    user?: TUser;
+    accessToken?: string;
+    refreshToken?: string;
+    data?: Array<TIngredient>;
+};
+
 export type TResetPasswordBody = {
     password: string;
     token: string;
 };
 
 export type TLogoutUserBody = {
-    token:string;
-}
-export type TUpdateTokenBody = TLogoutUserBody
+    token: string;
+};
+export type TUpdateTokenBody = TLogoutUserBody;
 
 export type TUserInfo = {
     email: string;

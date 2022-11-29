@@ -28,15 +28,13 @@ export const boundOrderModal = bindActionCreators(
 );
 
 export function getOrderNumberAction(orderBody) {
-    return function () {
-        boundOrderModal.orderRequest();
+    boundOrderModal.orderRequest();
 
-        createOrder(orderBody)
-            .then((data) => {
-                boundOrderModal.orderSuccess(data.order.number);
-            })
-            .catch((err) => {
-                boundOrderModal.orderFailed();
-            });
-    };
+    createOrder(orderBody)
+        .then((data) => {
+            boundOrderModal.orderSuccess(data.order.number);
+        })
+        .catch((err) => {
+            boundOrderModal.orderFailed();
+        });
 }

@@ -40,7 +40,7 @@ export function getIngredientsAction() {
 
     getIngredients()
         .then((data) => {
-            boundBurgerIngredientsActions.success(data);
+            boundBurgerIngredientsActions.success(data.data);
         })
         .catch(() => {
             alert("Возникла ошибка при загрузке ингедиентов");

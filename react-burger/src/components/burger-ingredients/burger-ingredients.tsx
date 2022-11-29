@@ -1,4 +1,4 @@
-import BurgerIngredientsStyles from "./burger-ingredients.module.css";
+import styles from "./burger-ingredients.module.css";
 import { useState, useEffect, useRef, SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -17,7 +17,7 @@ const BurgerIngredients: FC = () => {
         (store) => store.burgerIngredients
     );
 
-    const tabsRef = useRef<null |HTMLDivElement>(null) ;
+    const tabsRef = useRef<null | HTMLDivElement>(null);
 
     const categoryTitles = document.querySelectorAll("#categoryTitle");
     const categoryTitlesArray = Array.from(categoryTitles);
@@ -46,12 +46,11 @@ const BurgerIngredients: FC = () => {
             return elem.getBoundingClientRect().y;
         });
 
-        let parent:number;
+        let parent: number;
         if (e.target instanceof Element) {
             parent = e.target.getBoundingClientRect().y;
-        }
-        else {
-            parent= 0;
+        } else {
+            parent = 0;
         }
         const differences = distances.map((el) => {
             let new_el = el - parent;
@@ -64,12 +63,9 @@ const BurgerIngredients: FC = () => {
     };
 
     return (
-        <div>
+        <div className={styles.ingredientsWrapper}>
             <p className='text text_type_main-large mt-10'>Соберите бургер</p>
-            <div
-                ref={tabsRef}
-                className={BurgerIngredientsStyles.TabsWrapper + " mt-5"}
-            >
+            <div ref={tabsRef} className={styles.TabsWrapper + " mt-5"}>
                 {tabNames.map((elem) => {
                     return (
                         <Tab
@@ -86,11 +82,8 @@ const BurgerIngredients: FC = () => {
                 })}
             </div>
 
-            <div
-                className={BurgerIngredientsStyles.list}
-                onScroll={onScrollHandler}
-            >
-                {tabNames.map((elem, i) => {
+            <div className={styles.list} onScroll={onScrollHandler}>
+                {tabNames.map((elem) => {
                     return (
                         <Category
                             key={elem.name}

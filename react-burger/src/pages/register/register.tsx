@@ -8,24 +8,18 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { registerUserAction } from "../../services/actions/users";
+import { useForm } from "../../hooks/useForm";
 
 const RegisterPage: FC = () => {
-    const [userInfo, setUserInfo] = React.useState({
+    const { values, handleChange } = useForm({
         email: "",
         name: "",
         password: "",
     });
 
-    const onChageField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInfo({
-            ...userInfo,
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const onSubmitForm = (e: React.FormEvent) => {
         e.preventDefault();
-        registerUserAction(userInfo);
+        registerUserAction(values);
     };
 
     return (
@@ -35,23 +29,23 @@ const RegisterPage: FC = () => {
                 <Input
                     extraClass='mb-6'
                     name='name'
-                    value={userInfo.name}
-                    onChange={onChageField}
+                    value={values.name}
+                    onChange={handleChange}
                     placeholder='Имя'
                 />
                 <EmailInput
                     extraClass='mb-6'
                     name='email'
-                    value={userInfo.email}
-                    onChange={onChageField}
+                    value={values.email}
+                    onChange={handleChange}
                     placeholder='E-mail'
                 />
                 <PasswordInput
                     extraClass='mb-6'
                     placeholder='Пароль'
                     name='password'
-                    value={userInfo.password}
-                    onChange={onChageField}
+                    value={values.password}
+                    onChange={handleChange}
                 />
 
                 <Button htmlType='submit' extraClass='mb-20'>

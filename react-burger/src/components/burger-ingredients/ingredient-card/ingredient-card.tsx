@@ -3,16 +3,11 @@ import {
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCardStyles from "./ingredient-card.module.css";
-import { useSelector } from "react-redux";
-import { Modal } from "../../modal/modal";
-import { IngredientDetails } from "../../ingredient-details/ingredient-details";
 import { useDrag } from "react-dnd/dist/hooks";
 import { boundIngredientModal } from "../../../services/actions/ingredient-modal";
-import { FC, useState } from "react";
+import { FC} from "react";
 import {
     TIngredientWithCounter,
-    TStore,
-    TStoreIngredientModal,
 } from "../../../types/types";
 
 interface IIngredientCardProps {
@@ -20,10 +15,6 @@ interface IIngredientCardProps {
 }
 
 const IngredientCard: FC<IIngredientCardProps> = ({ ingredient }) => {
-    const [isVisible, setisVisible] = useState(false);
-    const { currentIngredient } = useSelector<TStore, TStoreIngredientModal>(
-        (store) => store.ingredientModal
-    );
 
     const { _id, image, price, name, counter } = ingredient;
 
@@ -32,21 +23,14 @@ const IngredientCard: FC<IIngredientCardProps> = ({ ingredient }) => {
         item: { _id },
     });
 
-    const close = () => {
-        window.history.pushState(null, "", "/");
-        boundIngredientModal.deleteIngredient();
-        setisVisible(false);
-    };
 
-    const show = () => {
-        window.history.pushState(null, "", `/ingredients/${_id}`);
+    const setIngredient = () => {
         boundIngredientModal.setIngredient(ingredient);
-        setisVisible(true);
     };
 
     return (
         <div ref={dragRef}>
-            <div className={IngredientCardStyles.card + " p-4"} onClick={show}>
+            <div className={IngredientCardStyles.card + " p-4"} onClick={setIngredient} >
                 {counter > 0 && (
                     <Counter
                         extraClass={IngredientCardStyles.counter}
@@ -66,11 +50,7 @@ const IngredientCard: FC<IIngredientCardProps> = ({ ingredient }) => {
                 </div>
                 <p className='text text_type_main-default'>{name}</p>
             </div>
-            {currentIngredient !== null && isVisible && (
-                <Modal title={"Детали ингредиента"} onClose={close}>
-                    <IngredientDetails />
-                </Modal>
-            )}
+            
         </div>
     );
 };

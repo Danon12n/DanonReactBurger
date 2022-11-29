@@ -7,22 +7,15 @@ import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import React, { FC } from "react";
 import { authUserAction } from "../../services/actions/users";
+import { useForm } from "../../hooks/useForm";
 
 const LoginPage: FC = () => {
-    const [userInfo, setUserInfo] = React.useState({
-        email: "",
-        password: "",
-    });
-    const onChageField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInfo({
-            ...userInfo,
-            [e.target.name]: e.target.value,
-        });
-    };
+    const { values, handleChange } = useForm({ email: "", password: "" });
+
     const onFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        authUserAction(userInfo);
+
+        authUserAction(values);
     };
 
     return (
@@ -32,22 +25,19 @@ const LoginPage: FC = () => {
                 <EmailInput
                     extraClass='mb-6'
                     name='email'
-                    value={userInfo.email}
-                    onChange={onChageField}
+                    value={values.email}
+                    onChange={handleChange}
                     placeholder='E-mail'
                 />
                 <PasswordInput
                     extraClass='mb-6'
                     placeholder='Пароль'
                     name='password'
-                    value={userInfo.password}
-                    onChange={onChageField}
+                    value={values.password}
+                    onChange={handleChange}
                 />
 
-                <Button
-                    htmlType='submit'
-                    extraClass='mb-20'
-                >
+                <Button htmlType='submit' extraClass='mb-20'>
                     Войти
                 </Button>
             </form>
