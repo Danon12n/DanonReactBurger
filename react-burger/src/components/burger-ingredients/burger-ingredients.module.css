@@ -1,9 +1,12 @@
+.ingredientsWrapper {
+    max-width: 624px;
+}
+
 .list {
     height: 70vh;
-    overflow-y: scroll ;
+    overflow-y: scroll;
 }
 
 .TabsWrapper {
     display: flex;
 }
-
