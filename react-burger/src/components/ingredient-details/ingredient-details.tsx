@@ -1,19 +1,12 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { TStore, TStoreIngredientModal } from "../../types/types";
-import { boundIngredientModal } from "../../services/actions/ingredient-modal";
 
 const IngredientDetails: FC = function () {
     const { currentIngredient } = useSelector<TStore, TStoreIngredientModal>(
         (store) => store.ingredientModal
     );
-
-    useEffect(() => {
-        return () => {
-            boundIngredientModal.deleteIngredient();
-        };
-    }, []);
 
     if (currentIngredient === null) return null;
     const components = [

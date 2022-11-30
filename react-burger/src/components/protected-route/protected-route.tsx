@@ -1,7 +1,7 @@
-import { Route, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { TStore, TStoreUser } from "../../types/types";
+import { useSelector } from "react-redux";
 
 interface IProtectedRouteProps {
     children?: JSX.Element;
@@ -10,41 +10,41 @@ interface IProtectedRouteProps {
     exact?: boolean;
 }
 
+type TLocationState = {
+    from: Location;
+};
+
 const ProtectedRoute: FC<IProtectedRouteProps> = ({
     children,
-    path,
-    exact,
     isRequiredAuthed,
+    ...rest
 }) => {
-    const { isAuthed, user } = useSelector<TStore, TStoreUser>(
+    const { isAuthed } = useSelector<TStore, TStoreUser>(
         (store) => store.users
     );
+    const location = useLocation<TLocationState>();
 
-    if (isAuthed && !user) {
-        return <p>Loading...</p>;
+    if (!isRequiredAuthed && isAuthed) {
+        const { from } = location.state || { from: { pathname: "/" } };
+
+        return (
+            <Route {...rest}>
+                <Redirect to={from} />
+            </Route>
+        );
     }
 
-    const pathname = isRequiredAuthed ? "/login" : "/";
-    const condition = isRequiredAuthed ? isAuthed : !isAuthed;
+    if (isRequiredAuthed && !isAuthed) {
+        return (
+            <Route {...rest}>
+                <Redirect
+                    to={{ pathname: "/login", state: { from: location } }}
+                />
+            </Route>
+        );
+    }
 
-    return (
-        <Route
-            path={path}
-            exact={exact}
-            render={({ location }) =>
-                condition ? (
-                    children
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: pathname,
-                            state: { from: location },
-                        }}
-                    />
-                )
-            }
-        />
-    );
+    return <Route {...rest}>{children}</Route>;
 };
 
 export default ProtectedRoute;
