@@ -1,8 +1,3 @@
-export type TLocationState = {
-    background: Location;
-};
-
-
 export type TUser = {
     email: string;
     name: string;

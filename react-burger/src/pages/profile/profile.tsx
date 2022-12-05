@@ -15,24 +15,28 @@ import {
 import OrdersHistory from "../../components/orders-history/orders-history";
 import { TStore, TStoreUser, TUserInfo } from "../../types/types";
 
-
-
 const ProfilePage: FC = () => {
     const { user } = useSelector<TStore, TStoreUser>((store) => store.users);
     const { pathname } = useLocation();
+    const [option, setOption] = useState("");
+    const [isInfoChanged, setIsInfoChanged] = useState(false);
+
+    const [userInfo, setUserInfo] = useState<TUserInfo>({
+        email: "",
+        name: "",
+        password: "",
+    });
 
     useEffect(() => {
         getUserAction();
     }, []);
 
-    const [option, setOption] = useState("");
-    const [isInfoChanged, setIsInfoChanged] = useState(false);
-
-    const [userInfo, setUserInfo] = useState<TUserInfo>({
-        email: user.email,
-        name: user.name,
-        password: "",
-    });
+    useEffect(() => {
+        setUserInfo({
+            email: user?.email,
+            name: user?.name,
+        });
+    }, [user?.name, user?.email]);
 
     const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInfo({

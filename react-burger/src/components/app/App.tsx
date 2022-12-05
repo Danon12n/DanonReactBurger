@@ -1,7 +1,6 @@
 import AppStyles from "./App.module.css";
 import AppHeader from "../app-header/app-header";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { ConstructorPage } from "../../pages/constructor/constructor";
 import { LoginPage } from "../../pages/login/login";
@@ -18,26 +17,23 @@ import { NotFoundPage } from "../../pages/not-found-page/not-found-page";
 import { LogoutPage } from "../../pages/logout/logout";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
-import { TLocationState } from "../../types/types";
 
 function App() {
-    const dispatch = useDispatch();
     useEffect(() => {
         const accessToken = getCookie("token");
         if (accessToken) {
             boundUser.setAuthed(true);
             getUserAction();
         }
-    }, [dispatch]);
+    }, []);
 
-    const location = useLocation<TLocationState>();
+    const location = useLocation<{ background: any }>();
     const history = useHistory();
     let background = location.state && location.state.background;
-
     return (
         <div className={AppStyles.App}>
             <AppHeader />
-            <Switch location={location || background}>
+            <Switch location={background || location}>
                 <Route path='/' exact>
                     <ConstructorPage />
                 </Route>
@@ -65,7 +61,7 @@ function App() {
                 <ProtectedRoute isRequiredAuthed path='/orders' exact>
                     <OrdersLinePage />
                 </ProtectedRoute>
-                <Route path='/ingredients/:id' exact>
+                <Route path='/ingredients/:id'>
                     <IngredientPage />
                 </Route>
 
@@ -74,7 +70,7 @@ function App() {
                 </Route>
             </Switch>
 
-            <Route path='/ingredients/:id' exact>
+            <Route path='/ingredients/:id'>
                 {background && (
                     <Modal
                         title=''
