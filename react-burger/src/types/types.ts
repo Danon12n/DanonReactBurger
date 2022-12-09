@@ -1,3 +1,25 @@
+// socketMiddleware
+import { store } from "../services/store";
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
+type TFeedOrder = {
+    ingredients: Array<string>;
+    _id: string;
+    status: "created" | "pending" | "done";
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export interface IFeedMessage {
+    success: boolean;
+    orders: Array<TFeedOrder>;
+    total: number;
+    totalToday: number;
+}
+// socketMiddleware
+
 export type TUser = {
     email: string;
     name: string;
@@ -47,7 +69,7 @@ export type TStoreBurgerConstructor = {
 };
 
 export type TStore = {
-    users: TStoreUser;
+    user: TStoreUser;
     orderModal: TStoreOrderModal;
     ingredientModal: TStoreIngredientModal;
     burgerIngredients: TStoreBurgerIngredients;
@@ -62,7 +84,10 @@ export type TServerAnswer = {
     user?: TUser;
     accessToken?: string;
     refreshToken?: string;
-    data?: Array<TIngredient>;
+    data?: Array<TIngredientWithCounter>;
+    order?: {
+        number: number;
+    };
 };
 
 export type TResetPasswordBody = {

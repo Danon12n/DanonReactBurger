@@ -28,7 +28,7 @@ type TItemId = {
 
 const BurgerConstructor: FC = () => {
     const { isAuthed } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
+        (store) => store.user
     );
 
     const { ingredients } = useSelector<TStore, TStoreBurgerIngredients>(

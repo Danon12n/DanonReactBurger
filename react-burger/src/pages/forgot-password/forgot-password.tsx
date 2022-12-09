@@ -8,7 +8,7 @@ import {
     EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC } from "react";
-import { boundUser } from "../../services/actions/users";
+import { boundUser } from "../../services/actions/user";
 import { TServerAnswer, TStore, TStoreUser } from "../../types/types";
 import { useForm } from "../../hooks/useForm";
 
@@ -17,7 +17,7 @@ const ForgotPasswordPage: FC = () => {
     const { values, handleChange } = useForm({ email: "" });
 
     const { isCodeSent } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
+        (store) => store.user
     );
 
     const onSubmitForm = (e: React.FormEvent) => {

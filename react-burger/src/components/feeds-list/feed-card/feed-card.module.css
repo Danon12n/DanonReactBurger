@@ -1,0 +1,30 @@
+.FeedListCard {
+    padding: 24px;
+    max-width: 524px;
+    gap: 16px;
+}
+
+.NumberAndDate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.IngredientsAndPrice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.IngredientsAndPrice .Ingredients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.IngredientsAndPrice .Price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+}

@@ -72,10 +72,10 @@ const CustomConstructorElement: FC<ICustomConstructorElementProps> = ({
                 return;
             }
 
-            boundBurgerConstructorActions.swapIngredients({
-                dragIndex: dragIndex,
-                hoverIndex: hoverIndex,
-            });
+            boundBurgerConstructorActions.swapIngredients(
+                dragIndex,
+                hoverIndex
+            );
             item.index = hoverIndex;
         },
     });

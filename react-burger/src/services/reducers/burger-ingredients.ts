@@ -1,26 +1,30 @@
-import {
-    GET_INGREDIENTS_SUCCESS,
-    GET_INGREDIENTS_FAILED,
-    GET_INGREDIENTS_REQUEST,
-    INCREASE_INGREDIENT_COUNTER,
-    DECREASE_INGREDIENT_COUNTER,
-} from "../constant";
+import { TIngredientWithCounter } from "../../types/types";
+import { TBurgeIngredientsAction } from "../actions/burger-ingredients";
 
-const initialState = {
+type TBurgerIngredientsState = {
+    ingredients: Array<TIngredientWithCounter>;
+    ingredientsRequest: boolean;
+    ingredientsFailed: boolean;
+};
+
+const initialState: TBurgerIngredientsState = {
     ingredients: [],
     ingredientsRequest: false,
     ingredientsFailed: false,
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (
+    state = initialState,
+    action: TBurgeIngredientsAction
+) => {
     switch (action.type) {
-        case GET_INGREDIENTS_REQUEST:
+        case "GET_INGREDIENTS_REQUEST":
             return {
                 ...state,
                 ingredientsRequest: true,
                 ingredientsFailed: false,
             };
-        case GET_INGREDIENTS_SUCCESS:
+        case "GET_INGREDIENTS_SUCCESS":
             const res = action.payload.map((elem) => {
                 elem.counter = 0;
                 return elem;
@@ -30,13 +34,13 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ingredientsRequest: false,
                 ingredients: [...res],
             };
-        case GET_INGREDIENTS_FAILED:
+        case "GET_INGREDIENTS_FAILED":
             return {
                 ...state,
                 ingredientsRequest: false,
                 ingredientsFailed: true,
             };
-        case INCREASE_INGREDIENT_COUNTER:
+        case "INCREASE_INGREDIENT_COUNTER":
             return {
                 ...state,
                 ingredients: [
@@ -50,7 +54,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                     }),
                 ],
             };
-        case DECREASE_INGREDIENT_COUNTER:
+        case "DECREASE_INGREDIENT_COUNTER":
             return {
                 ...state,
                 ingredients: [

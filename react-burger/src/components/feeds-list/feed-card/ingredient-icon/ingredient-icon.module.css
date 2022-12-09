@@ -1,0 +1,14 @@
+.ImgFrame {
+    width: 80px;
+    height: 80px;
+
+    border: 2px solid;
+    border-color: #501ab3;
+    border-radius: 100%;
+    background: #131316;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

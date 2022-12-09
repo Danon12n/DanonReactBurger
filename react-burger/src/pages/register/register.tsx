@@ -7,7 +7,7 @@ import {
     Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-import { registerUserAction } from "../../services/actions/users";
+import { registerUserAction } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
 const RegisterPage: FC = () => {

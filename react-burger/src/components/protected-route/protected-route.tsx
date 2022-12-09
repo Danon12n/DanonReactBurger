@@ -19,9 +19,7 @@ const ProtectedRoute: FC<IProtectedRouteProps> = ({
     isRequiredAuthed,
     ...rest
 }) => {
-    const { isAuthed } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
-    );
+    const { isAuthed } = useSelector<TStore, TStoreUser>((store) => store.user);
     const location = useLocation<TLocationState>();
 
     if (!isRequiredAuthed && isAuthed) {

@@ -17,7 +17,7 @@ const NavItems = [
     {
         icon: <ListIcon type='secondary' />,
         text: "Лента заказов",
-        path: "/orders",
+        path: "/feed",
     },
 ];
 const AppHeader = () => {

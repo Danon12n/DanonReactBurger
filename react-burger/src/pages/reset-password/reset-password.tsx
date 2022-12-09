@@ -28,7 +28,7 @@ const ResetPasswordPage: FC = () => {
     };
 
     const { isCodeSent } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
+        (store) => store.user
     );
 
     if (!isCodeSent) {

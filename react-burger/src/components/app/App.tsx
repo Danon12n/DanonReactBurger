@@ -10,13 +10,24 @@ import ResetPasswordPage from "../../pages/reset-password/reset-password";
 import { ProfilePage } from "../../pages/profile/profile";
 import ProtectedRoute from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookie";
-import { boundUser, getUserAction } from "../../services/actions/users";
+import { boundUser, getUserAction } from "../../services/actions/user";
 import { IngredientPage } from "../../pages/ingredient/ingredient";
-import { OrdersLinePage } from "../../pages/orders-line/orders";
+import { OrderFeedPage } from "../../pages/order-feed/order-feed";
 import { NotFoundPage } from "../../pages/not-found-page/not-found-page";
 import { LogoutPage } from "../../pages/logout/logout";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
+
+//TODOs
+
+/*
+    ()  -Перенести хранилище в ts
+    ()  -Добавить новые роуты /feed , /feed/:id и /profile/orders/, /profile/orders/:id
+    ()  -Реализовать модалки и отдельные страницы с этими роутами как с ингредиентами
+    ()  -Оформить реализацию websocket
+    ()  -сверстать страницы с лентой заказов и историей заказов
+    ()  -подумать как реализовать работу с двумя сокет соединениями
+*/
 
 function App() {
     useEffect(() => {
@@ -55,16 +66,26 @@ function App() {
                 <ProtectedRoute isRequiredAuthed path='/profile/orders' exact>
                     <ProfilePage />
                 </ProtectedRoute>
+                <ProtectedRoute
+                    isRequiredAuthed
+                    path='/profile/orders/:id'
+                    exact
+                >
+                    <ProfilePage />
+                </ProtectedRoute>{" "}
+                //todo: OrderPage
                 <ProtectedRoute isRequiredAuthed path='/logout'>
                     <LogoutPage />
                 </ProtectedRoute>
-                <ProtectedRoute isRequiredAuthed path='/orders' exact>
-                    <OrdersLinePage />
-                </ProtectedRoute>
-                <Route path='/ingredients/:id'>
+                <ProtectedRoute path='/ingredients/:id' exact>
                     <IngredientPage />
+                </ProtectedRoute>
+                <Route path='/feed' exact>
+                    <OrderFeedPage />
                 </Route>
-
+                <Route path='/feed/:id' exact>
+                    <OrderFeedPage /> //todo: feedPage
+                </Route>
                 <Route>
                     <NotFoundPage />
                 </Route>
@@ -79,6 +100,30 @@ function App() {
                         }}
                     >
                         <IngredientDetails />
+                    </Modal>
+                )}
+            </Route>
+            <Route path='/feed/:id'>
+                {background && (
+                    <Modal
+                        title=''
+                        onClose={() => {
+                            history.goBack();
+                        }}
+                    >
+                        <p>FEED/:ID</p>
+                    </Modal>
+                )}
+            </Route>
+            <Route path='/profile/orders/:id'>
+                {background && (
+                    <Modal
+                        title=''
+                        onClose={() => {
+                            history.goBack();
+                        }}
+                    >
+                        <p>/profile/orders/:id</p>
                     </Modal>
                 )}
             </Route>
