@@ -1,48 +1,55 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 
-// import type { AppActions, AppDispatch, RootState } from "../../types/types";
 import type { AppDispatch, RootState } from "../../types/types";
-import { boundWS } from "../actions/web-socket";
 
-export const socketMiddleware = (wsUrl: string): Middleware => {
+export const socketMiddleware = (AppActions: any): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
         let socket: WebSocket | null = null;
 
         return (next) => (action: any) => {
-            // return (next) => (action:<AppActions>) => {
             const { dispatch, getState } = store;
             const { type, payload } = action;
+            const {
+                wsClosed,
+                wsError,
+                wsGetMessage,
+                wsSendMessage,
+                wsStart,
+                wsSuccess,
+            } = AppActions;
 
-            if (type === "WS_CONNECTION_START") {
-                // объект класса WebSocket
-                socket = new WebSocket(wsUrl);
+            if (type === wsStart) {
+                socket = new WebSocket(payload.wsUrl);
             }
             if (socket) {
                 // функция, которая вызывается при открытии сокета
                 socket.onopen = (event) => {
-                    // boundWS.wsSuccess(event)
-                    dispatch({ type: "WS_CONNECTION_SUCCESS", payload: event });
+                    dispatch({ type: wsSuccess });
                 };
 
                 // функция, которая вызывается при ошибке соединения
                 socket.onerror = (event) => {
-                    // dispatch({ type: "WS_CONNECTION_ERROR", payload: event });
+                    dispatch({ type: wsError });
                 };
 
                 // функция, которая вызывается при получения события от сервера
                 socket.onmessage = (event) => {
                     const { data } = event;
-                    dispatch({ type: "WS_GET_MESSAGE", payload: data });
+                    dispatch({
+                        type: wsGetMessage,
+                        payload: JSON.parse(data),
+                    });
                 };
                 // функция, которая вызывается при закрытии соединения
                 socket.onclose = (event) => {
-                    dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
+                    dispatch({ type: wsClosed, payload: event });
                 };
 
                 if (type === "WS_SEND_MESSAGE") {
                     const message = payload;
                     // функция для отправки сообщения на сервер
                     socket.send(JSON.stringify(message));
+                    dispatch({ type: wsSendMessage });
                 }
             }
 

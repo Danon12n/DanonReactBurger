@@ -1,7 +1,7 @@
 import { TUser } from "../../types/types";
 import { TUserAction } from "../actions/user";
 
-type TUserState = {
+export type TUserState = {
     updateUserInfoRequest: boolean;
     updateUserInfoFailed: boolean;
 

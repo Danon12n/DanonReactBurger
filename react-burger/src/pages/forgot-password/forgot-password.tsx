@@ -9,14 +9,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { FC } from "react";
 import { boundUser } from "../../services/actions/user";
-import { TServerAnswer, TStore, TStoreUser } from "../../types/types";
+import { TServerAnswer, TStore } from "../../types/types";
 import { useForm } from "../../hooks/useForm";
+import { TUserState } from "../../services/reducers/user";
 
 const ForgotPasswordPage: FC = () => {
-
     const { values, handleChange } = useForm({ email: "" });
 
-    const { isCodeSent } = useSelector<TStore, TStoreUser>(
+    const { isCodeSent } = useSelector<TStore, TUserState>(
         (store) => store.user
     );
 
@@ -31,7 +31,6 @@ const ForgotPasswordPage: FC = () => {
             })
             .catch((err: Error) => console.log(err));
     };
-
 
     return !isCodeSent ? (
         <div className={styles.wrapper}>

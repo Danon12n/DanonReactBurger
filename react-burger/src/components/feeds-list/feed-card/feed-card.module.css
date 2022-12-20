@@ -1,7 +1,9 @@
 .FeedListCard {
     padding: 24px;
-    max-width: 524px;
-    gap: 16px;
+    width: 524px;
+    background: #1c1c21;
+    border-radius: 40px;
+    margin-right: 10px;
 }
 
 .NumberAndDate {
@@ -14,12 +16,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.IngredientsAndPrice .Ingredients {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .IngredientsAndPrice .Price {

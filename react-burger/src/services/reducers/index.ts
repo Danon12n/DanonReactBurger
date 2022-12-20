@@ -4,7 +4,9 @@ import { burgerConstructorReducer } from "./burger-constructor";
 import { ingredientModalReducer } from "./ingredient-modal";
 import { orderModalReducer } from "./order-modal";
 import { userReducer } from "./user";
-import { wsReducer } from "./web-socket";
+import { feedWSReducer } from "./feedWS";
+import { ordersWSReducer } from "./ordersWS";
+import { feedModalReducer } from "./feed-modal";
 
 export const rootReducer = combineReducers({
     burgerConstructor: burgerConstructorReducer,
@@ -12,5 +14,7 @@ export const rootReducer = combineReducers({
     ingredientModal: ingredientModalReducer,
     orderModal: orderModalReducer,
     user: userReducer,
-    ws: wsReducer
+    feeds: feedWSReducer,
+    orders: ordersWSReducer,
+    feedModal: feedModalReducer,
 });

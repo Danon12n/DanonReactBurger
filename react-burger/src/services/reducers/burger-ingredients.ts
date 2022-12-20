@@ -1,7 +1,7 @@
 import { TIngredientWithCounter } from "../../types/types";
 import { TBurgeIngredientsAction } from "../actions/burger-ingredients";
 
-type TBurgerIngredientsState = {
+export type  TBurgerIngredientsState = {
     ingredients: Array<TIngredientWithCounter>;
     ingredientsRequest: boolean;
     ingredientsFailed: boolean;

@@ -5,12 +5,13 @@ import { useSelector } from "react-redux";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 import { boundIngredientModal } from "../../services/actions/ingredient-modal";
 import { FC, useEffect } from "react";
-import { TStore, TStoreBurgerIngredients } from "../../types/types";
+import { TStore } from "../../types/types";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
 
 const IngredientPage: FC = () => {
     const { ingredients, ingredientsRequest } = useSelector<
         TStore,
-        TStoreBurgerIngredients
+        TBurgerIngredientsState
     >((store) => store.burgerIngredients);
     const { id } = useParams<{ id?: string }>();
 

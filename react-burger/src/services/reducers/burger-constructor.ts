@@ -2,7 +2,7 @@ import { TIngredientWithCounter } from "../../types/types";
 
 import { TBurgerConstructorAction } from "../actions/burger-constructor";
 
-type TBurgerConstructorState = {
+export type TBurgerConstructorState = {
     fillings: Array<TIngredientWithCounter>;
     bun: TIngredientWithCounter | null;
 };

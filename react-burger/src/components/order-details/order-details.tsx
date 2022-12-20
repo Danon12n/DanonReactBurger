@@ -2,10 +2,11 @@ import styles from "./order-details.module.css";
 import DoneIcon from "../../images/done.svg";
 import { useSelector } from "react-redux";
 import { FC } from "react";
-import { TStore, TStoreOrderModal } from "../../types/types";
+import { TStore } from "../../types/types";
+import { TOrderModalState } from "../../services/reducers/order-modal";
 
 const OrderDetails: FC = () => {
-    const { orderNumber } = useSelector<TStore, TStoreOrderModal>(
+    const { orderNumber } = useSelector<TStore, TOrderModalState>(
         (store) => store.orderModal
     );
 

@@ -12,11 +12,13 @@ import ProtectedRoute from "../protected-route/protected-route";
 import { getCookie } from "../../utils/cookie";
 import { boundUser, getUserAction } from "../../services/actions/user";
 import { IngredientPage } from "../../pages/ingredient/ingredient";
-import { OrderFeedPage } from "../../pages/order-feed/order-feed";
+import { FeedsPage } from "../../pages/feeds/feeds";
 import { NotFoundPage } from "../../pages/not-found-page/not-found-page";
 import { LogoutPage } from "../../pages/logout/logout";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
+import { FeedDetails } from "../feed-details/feed-details";
+import { FeedPage } from "../../pages/feed/feed";
 
 //TODOs
 
@@ -68,23 +70,22 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute
                     isRequiredAuthed
-                    path='/profile/orders/:id'
+                    path='/profile/orders/:orderNumber'
                     exact
                 >
-                    <ProfilePage />
-                </ProtectedRoute>{" "}
-                //todo: OrderPage
+                    <FeedPage />
+                </ProtectedRoute>
                 <ProtectedRoute isRequiredAuthed path='/logout'>
                     <LogoutPage />
                 </ProtectedRoute>
-                <ProtectedRoute path='/ingredients/:id' exact>
+                <Route path='/ingredients/:id'>
                     <IngredientPage />
-                </ProtectedRoute>
-                <Route path='/feed' exact>
-                    <OrderFeedPage />
                 </Route>
-                <Route path='/feed/:id' exact>
-                    <OrderFeedPage /> //todo: feedPage
+                <Route path='/feed' exact>
+                    <FeedsPage />
+                </Route>
+                <Route path='/feed/:orderNumber' exact>
+                    <FeedPage />
                 </Route>
                 <Route>
                     <NotFoundPage />
@@ -103,7 +104,7 @@ function App() {
                     </Modal>
                 )}
             </Route>
-            <Route path='/feed/:id'>
+            <Route path='/feed/:orderNumber'>
                 {background && (
                     <Modal
                         title=''
@@ -111,11 +112,11 @@ function App() {
                             history.goBack();
                         }}
                     >
-                        <p>FEED/:ID</p>
+                        <FeedDetails />
                     </Modal>
                 )}
             </Route>
-            <Route path='/profile/orders/:id'>
+            <Route path='/profile/orders/:orderNumber'>
                 {background && (
                     <Modal
                         title=''
@@ -123,7 +124,7 @@ function App() {
                             history.goBack();
                         }}
                     >
-                        <p>/profile/orders/:id</p>
+                        <FeedDetails />
                     </Modal>
                 )}
             </Route>

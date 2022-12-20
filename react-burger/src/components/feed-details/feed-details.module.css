@@ -1,0 +1,16 @@
+.details {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 600px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.priceAndDate {
+    display: flex;
+    justify-content: space-between;
+}

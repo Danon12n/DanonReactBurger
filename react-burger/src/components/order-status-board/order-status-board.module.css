@@ -1,0 +1,13 @@
+.columns {
+    display: flex;
+    gap: 36px;
+}
+
+.columns .column {
+    display: flex;
+    flex-direction: column;
+}
+
+.Ready {
+    color: #00cccc;
+}

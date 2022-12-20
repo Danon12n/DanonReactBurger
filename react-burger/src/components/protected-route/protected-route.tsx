@@ -1,7 +1,8 @@
 import { Route, Redirect, useLocation } from "react-router-dom";
 import { FC } from "react";
-import { TStore, TStoreUser } from "../../types/types";
+import { TStore } from "../../types/types";
 import { useSelector } from "react-redux";
+import { TUserState } from "../../services/reducers/user";
 
 interface IProtectedRouteProps {
     children?: JSX.Element;
@@ -19,7 +20,7 @@ const ProtectedRoute: FC<IProtectedRouteProps> = ({
     isRequiredAuthed,
     ...rest
 }) => {
-    const { isAuthed } = useSelector<TStore, TStoreUser>((store) => store.user);
+    const { isAuthed } = useSelector<TStore, TUserState>((store) => store.user);
     const location = useLocation<TLocationState>();
 
     if (!isRequiredAuthed && isAuthed) {

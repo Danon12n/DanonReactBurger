@@ -5,7 +5,8 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Category from "./category/category";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 import { FC } from "react";
-import { TStore, TStoreBurgerIngredients } from "../../types/types";
+import { TStore } from "../../types/types";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
 
 const BurgerIngredients: FC = () => {
     useEffect(() => {
@@ -13,7 +14,7 @@ const BurgerIngredients: FC = () => {
     }, []);
 
     const [current, setCurrent] = useState("");
-    const { ingredients } = useSelector<TStore, TStoreBurgerIngredients>(
+    const { ingredients } = useSelector<TStore, TBurgerIngredientsState>(
         (store) => store.burgerIngredients
     );
 

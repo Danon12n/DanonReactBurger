@@ -5,17 +5,18 @@ import {
     PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
-import { TStore, TStoreUser, TUserInfo } from "../../types/types";
+import { TStore, TUserInfo } from "../../types/types";
 import {
     getUserAction,
     updateUserInfoAction,
 } from "../../services/actions/user";
 import styles from "./user-profile.module.css";
+import { TUserState } from "../../services/reducers/user";
 
 interface IUserProfileProps {}
 
 const UserProfile: FC<IUserProfileProps> = ({}) => {
-    const { user } = useSelector<TStore, TStoreUser>((store) => store.user);
+    const { user } = useSelector<TStore, TUserState>((store) => store.user);
     const [option, setOption] = useState("");
     const [isInfoChanged, setIsInfoChanged] = useState(false);
 
@@ -70,8 +71,8 @@ const UserProfile: FC<IUserProfileProps> = ({}) => {
                 getUserAction();
                 setUserInfo({
                     ...userInfo,
-                    name: user.name,
-                    email: user.email,
+                    name: user?.name,
+                    email: user?.email,
                 });
                 setIsInfoChanged(false);
                 break;
@@ -87,7 +88,7 @@ const UserProfile: FC<IUserProfileProps> = ({}) => {
                     extraClass='mb-6'
                     icon='EditIcon'
                     name='name'
-                    value={userInfo.name}
+                    value={userInfo?.name ?  userInfo.name : ""}
                     onChange={onChangeField}
                     placeholder={"Имя"}
                 />
@@ -96,7 +97,7 @@ const UserProfile: FC<IUserProfileProps> = ({}) => {
                     inputMode='email'
                     icon='EditIcon'
                     name='email'
-                    value={userInfo.email}
+                    value={userInfo?.email ?  userInfo.email : ""}
                     onChange={onChangeField}
                     placeholder={"Логин"}
                 />

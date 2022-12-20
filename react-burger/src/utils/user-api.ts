@@ -98,3 +98,6 @@ export const updateUserInfo = (
         body: JSON.stringify(userInfo),
     });
 };
+export const getOrderByNumber = (number: number | string) => {
+    return request(`https://norma.nomoreparties.space/api/orders/${number}`);
+};
