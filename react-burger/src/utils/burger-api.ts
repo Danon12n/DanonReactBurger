@@ -23,13 +23,14 @@ export const getIngredients = () => {
 };
 
 export const createOrder = (orderBody: Array<string>) => {
-    const accessToken = getCookie("token");
+    const accessToken = getCookie("token") as string;
 
-    return request(`${BURGER_API_URL}/orders?token=${accessToken?.slice(7)}`, {
+    return request(`${BURGER_API_URL}/orders`, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            authorization: accessToken,
         },
         body: JSON.stringify({ ingredients: orderBody }),
     });
@@ -40,8 +41,8 @@ export const getIngredientById = (
     ingredientId: string,
     ingredients: TIngredientWithCounter[]
 ) => {
-    const ingredient = ingredients.find((el: TIngredientWithCounter) => {
-        if (el._id === ingredientId) return el;
-    });
+    const ingredient = ingredients.find(
+        (el: TIngredientWithCounter) => el._id === ingredientId
+    );
     return ingredient;
 };

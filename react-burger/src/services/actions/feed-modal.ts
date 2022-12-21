@@ -6,7 +6,7 @@ import {
     GET_FEED_SUCCESS,
 } from "../action-types/feed-modal";
 import { getOrderByNumber } from "../../utils/user-api";
-import { IFeedMessage, TFeedOrder, TServerAnswer } from "../../types/types";
+import { IFeedMessage, TFeedOrder } from "../../types/types";
 
 export interface IGetFeedRequest {
     readonly type: typeof GET_FEED_REQUEST;
@@ -46,12 +46,9 @@ export const boundFeedModal = bindActionCreators(
 
 export function getFeedAction(orderNumber: number | string) {
     boundFeedModal.feedRequest();
-    console.log(orderNumber);
 
     getOrderByNumber(orderNumber)
         .then((data) => {
-            console.log(data);
-
             if (data && data.orders) boundFeedModal.feedSuccess(data.orders[0]);
         })
         .catch((err) => {

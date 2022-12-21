@@ -8,6 +8,11 @@
     flex-direction: column;
 }
 
+.column .columnNumbers {
+    display: flex;
+    gap: 15px;
+}
+
 .Ready {
     color: #00cccc;
 }

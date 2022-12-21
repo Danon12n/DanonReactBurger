@@ -13,13 +13,14 @@ import { IngredientIcon } from "../feeds-list/feed-card/ingredient-icon/ingredie
 import { getIngredientById } from "../../utils/burger-api";
 import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
-interface FeedDetailsProps {}
 
-const FeedDetails: FC<FeedDetailsProps> = ({}) => {
+const FeedDetails: FC = () => {
     const { orderNumber } = useParams<{ orderNumber: string }>();
 
     useEffect(() => {
         getFeedAction(orderNumber);
+        //отключаю линтер потому что эффект должен отпрабатывать только при монтировании
+        // eslint-disable-next-line
     }, []);
 
     const { feed } = useSelector<TStore, TFeedModalState>(
@@ -34,6 +35,8 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
         if (ingredients.length === 0) {
             getIngredientsAction();
         }
+        //отключаю линтер потому что эффект должен отпрабатывать только при монтировании
+        // eslint-disable-next-line
     }, []);
 
     const filterFeedIngredients = (ingredientsIds: string[]) => {
@@ -79,6 +82,8 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
             }, price);
             return price;
         },
+        //если измениться заказ, то и цена должна пересчитаться, хотя напрямую в коллбеке feed и не используется
+        // eslint-disable-next-line
         [feed]
     );
 
@@ -96,7 +101,9 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
     return (
         feed && (
             <div className={styles.details}>
-                <p className='text text_type_digits-default mb-10'>
+                <p
+                    className={`${styles.title} text text_type_digits-default mb-10`}
+                >
                     #{feed.number}
                 </p>
                 <p className=' text text_type_main-medium mb-2'>{feed.name}</p>
@@ -111,7 +118,10 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
                 <div className={`${styles.IngredientsList} mb-10`}>
                     {filteredIngredientsWithQuantity.map((el, index) => {
                         return (
-                            <div className={styles.Ingredient}>
+                            <div
+                                className={styles.Ingredient}
+                                key={feedIngredients[index]._id}
+                            >
                                 <IngredientIcon
                                     img={feedIngredients[index].image_mobile}
                                 />
@@ -120,7 +130,7 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
                                 </p>
                                 <div className={styles.price}>
                                     <p className='text text_type_digits-default'>
-                                        {el.quantity} х{" "}
+                                        {el.quantity} x{" "}
                                         {feedIngredients[index].price}
                                     </p>
                                     <CurrencyIcon type='primary' />

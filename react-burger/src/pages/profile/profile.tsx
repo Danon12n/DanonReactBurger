@@ -37,7 +37,9 @@ const ProfilePage: FC = () => {
         <div className={styles.wrapper}>
             <SideNavigation />
             {pathname === "/profile" && <UserProfile />}
-            {pathname === "/profile/orders" && <FeedsList feed={feed} />}
+            {pathname === "/profile/orders" && (
+                <FeedsList path={pathname} feed={feed} />
+            )}
         </div>
     );
 };

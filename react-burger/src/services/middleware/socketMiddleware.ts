@@ -7,7 +7,7 @@ export const socketMiddleware = (AppActions: any): Middleware => {
         let socket: WebSocket | null = null;
 
         return (next) => (action: any) => {
-            const { dispatch, getState } = store;
+            const { dispatch } = store;
             const { type, payload } = action;
             const {
                 wsClosed,
@@ -43,6 +43,7 @@ export const socketMiddleware = (AppActions: any): Middleware => {
                 // функция, которая вызывается при закрытии соединения
                 socket.onclose = (event) => {
                     dispatch({ type: wsClosed, payload: event });
+                    socket?.close();
                 };
 
                 if (type === "WS_SEND_MESSAGE") {

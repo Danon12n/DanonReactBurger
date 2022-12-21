@@ -7,9 +7,8 @@ import { TFeedWSState } from "../../services/reducers/feedWS";
 import { TStore } from "../../types/types";
 import styles from "./feeds.module.css";
 
-interface IFeedsPageProps {}
 
-const FeedsPage: FC<IFeedsPageProps> = ({}) => {
+const FeedsPage: FC = () => {
     useEffect(() => {
         boundFeedWS.wsStart("wss://norma.nomoreparties.space/orders/all");
 
@@ -19,7 +18,6 @@ const FeedsPage: FC<IFeedsPageProps> = ({}) => {
     }, []);
 
     const { feed } = useSelector<TStore, TFeedWSState>((store) => store.feeds);
-    console.log(feed);
 
     return (
         feed && (
@@ -31,7 +29,7 @@ const FeedsPage: FC<IFeedsPageProps> = ({}) => {
                         Лента заказов
                     </h1>
                     <div className={styles.FeedsWrapper}>
-                        <FeedsList feed={feed} />
+                        <FeedsList path="feed" feed={feed} />
                         <OrderStatusBoard />
                     </div>
                 </div>

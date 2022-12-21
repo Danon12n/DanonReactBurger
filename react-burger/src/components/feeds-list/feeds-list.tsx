@@ -8,9 +8,10 @@ import styles from "./feeds-list.module.css";
 import { Link, useLocation } from "react-router-dom";
 interface IFeedsListProps {
     feed: IFeedMessage;
+    path: string;
 }
 
-const FeedsList: FC<IFeedsListProps> = ({ feed }) => {
+const FeedsList: FC<IFeedsListProps> = ({ path, feed }) => {
     const { ingredients } = useSelector<TStore, TBurgerIngredientsState>(
         (store) => store.burgerIngredients
     );
@@ -21,6 +22,8 @@ const FeedsList: FC<IFeedsListProps> = ({ feed }) => {
         if (ingredients.length === 0) {
             getIngredientsAction();
         }
+        //отключаю линтер потому что эффект должен отпрабатывать только при монтировании
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -31,7 +34,7 @@ const FeedsList: FC<IFeedsListProps> = ({ feed }) => {
                         className={`${styles.link} text text_type_main-medium`}
                         key={order._id}
                         to={{
-                            pathname: `/feed/${order.number}`,
+                            pathname: `${path}/${order.number}`,
                             state: { background: location },
                         }}
                     >
