@@ -12,7 +12,6 @@
     margin-left: -16px;
     border: 2px solid rgb(93, 11, 145);
     border-radius: 100px;
-    z-index: 1;
 }
 .Blured {
     opacity: 0.5;

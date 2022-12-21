@@ -9,6 +9,10 @@ import { getFeedAction } from "../../services/actions/feed-modal";
 import { TFeedModalState } from "../../services/reducers/feed-modal";
 import { TIngredientWithCounter, TStore } from "../../types/types";
 import styles from "./feed-details.module.css";
+import { IngredientIcon } from "../feeds-list/feed-card/ingredient-icon/ingredient-icon";
+import { getIngredientById } from "../../utils/burger-api";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 interface FeedDetailsProps {}
 
 const FeedDetails: FC<FeedDetailsProps> = ({}) => {
@@ -21,6 +25,43 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
     const { feed } = useSelector<TStore, TFeedModalState>(
         (store) => store.feedModal
     );
+
+    const { ingredients } = useSelector<TStore, TBurgerIngredientsState>(
+        (store) => store.burgerIngredients
+    );
+
+    useEffect(() => {
+        if (ingredients.length === 0) {
+            getIngredientsAction();
+        }
+    }, []);
+
+    const filterFeedIngredients = (ingredientsIds: string[]) => {
+        const result: { ingredientId: string; quantity: number }[] = [];
+        ingredientsIds.forEach((elem) => {
+            let index = result.findIndex((el) => {
+                return el.ingredientId === elem;
+            });
+            if (index === -1) {
+                result.push({ ingredientId: elem, quantity: 1 });
+            } else {
+                result[index].quantity += 1;
+            }
+        });
+        return result;
+    };
+
+    const getFeedIngredients = (
+        filteredIngredientsWithQuantity: {
+            ingredientId: string;
+            quantity: number;
+        }[]
+    ) => {
+        const result = filteredIngredientsWithQuantity.map((el) => {
+            return getIngredientById(el.ingredientId, ingredients);
+        });
+        return result;
+    };
 
     const calculatePrice = useCallback(
         (ingredients: Array<TIngredientWithCounter | undefined>) => {
@@ -43,7 +84,14 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
 
     if (!feed) return <p>order Not Found</p>;
 
-    const feedStatus = feed.status === "done" ? "Выполнено" : "Готовится";
+    const filteredIngredientsWithQuantity = filterFeedIngredients(
+        feed.ingredients
+    );
+    const feedIngredients = getFeedIngredients(
+        filteredIngredientsWithQuantity
+    ) as TIngredientWithCounter[];
+    const feedPrice = calculatePrice(feedIngredients);
+    const feedStatus = feed.status === "done" ? "Выполнен" : "Готовится";
 
     return (
         feed && (
@@ -52,20 +100,44 @@ const FeedDetails: FC<FeedDetailsProps> = ({}) => {
                     #{feed.number}
                 </p>
                 <p className=' text text_type_main-medium mb-2'>{feed.name}</p>
-                <p className='text text_type_main-default mb-15'>
+                <p
+                    className={`${
+                        feed.status === "done" ? styles.Done : ""
+                    } text text_type_main-default mb-15`}
+                >
                     {feedStatus}
                 </p>
                 <p className=' text text_type_main-medium mb-4'>Состав:</p>
                 <div className={`${styles.IngredientsList} mb-10`}>
-                    <div className={styles.Ingredient}>ingreient</div>
+                    {filteredIngredientsWithQuantity.map((el, index) => {
+                        return (
+                            <div className={styles.Ingredient}>
+                                <IngredientIcon
+                                    img={feedIngredients[index].image_mobile}
+                                />
+                                <p className='text text_type_main-default'>
+                                    {feedIngredients[index].name}
+                                </p>
+                                <div className={styles.price}>
+                                    <p className='text text_type_digits-default'>
+                                        {el.quantity} х{" "}
+                                        {feedIngredients[index].price}
+                                    </p>
+                                    <CurrencyIcon type='primary' />
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-                <div className={styles.priceAndDate}>
+                <div className={`${styles.priceAndDate} mb-5`}>
                     <FormattedDate
                         className='text text_type_main-default text_color_inactive'
                         date={new Date(feed.createdAt)}
                     />
                     <div className={styles.price}>
-                        <p className='text text_type_digits-default'>510</p>
+                        <p className='text text_type_digits-default'>
+                            {feedPrice}
+                        </p>
                         <CurrencyIcon type='primary' />
                     </div>
                 </div>

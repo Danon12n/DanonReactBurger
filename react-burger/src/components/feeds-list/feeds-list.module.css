@@ -5,3 +5,7 @@
     overflow-y: scroll;
     max-height: 800px;
 }
+.link {
+    text-decoration: none;
+    color: white;
+}

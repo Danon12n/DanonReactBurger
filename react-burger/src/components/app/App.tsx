@@ -84,7 +84,7 @@ function App() {
                 <Route path='/feed' exact>
                     <FeedsPage />
                 </Route>
-                <Route path='/feed/:orderNumber' exact>
+                <Route path='/feed/:orderNumber'>
                     <FeedPage />
                 </Route>
                 <Route>
