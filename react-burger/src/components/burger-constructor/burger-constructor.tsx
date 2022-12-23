@@ -14,27 +14,22 @@ import { boundBurgerIngredientsActions } from "../../services/actions/burger-ing
 import { getOrderNumberAction } from "../../services/actions/order-modal";
 import { useDrop } from "react-dnd/dist/hooks/useDrop";
 import { Redirect } from "react-router-dom";
-import {
-    TConstructorIngredient,
-    TStore,
-    TStoreBurgerConstructor,
-    TStoreBurgerIngredients,
-    TStoreUser,
-} from "../../types/types";
+import { TIngredientWithCounter, TStore } from "../../types/types";
+import { TUserState } from "../../services/reducers/user";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { TBurgerConstructorState } from "../../services/reducers/burger-constructor";
 
 type TItemId = {
     _id: string;
 };
 
 const BurgerConstructor: FC = () => {
-    const { isAuthed } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
-    );
+    const { isAuthed } = useSelector<TStore, TUserState>((store) => store.user);
 
-    const { ingredients } = useSelector<TStore, TStoreBurgerIngredients>(
+    const { ingredients } = useSelector<TStore, TBurgerIngredientsState>(
         (store) => store.burgerIngredients
     );
-    const { fillings, bun } = useSelector<TStore, TStoreBurgerConstructor>(
+    const { fillings, bun } = useSelector<TStore, TBurgerConstructorState>(
         (store) => store.burgerConstructor
     );
 
@@ -47,7 +42,7 @@ const BurgerConstructor: FC = () => {
                 if (bun !== null)
                     boundBurgerIngredientsActions.decreaseCounter(bun._id);
             } else {
-                const newIngredient: TConstructorIngredient = {
+                const newIngredient: TIngredientWithCounter = {
                     ...ingredient,
                     ingredientKey: "",
                 };
@@ -94,16 +89,17 @@ const BurgerConstructor: FC = () => {
     };
 
     const onCreateOrderClick = () => {
-        const orderBody = [
-            bun._id,
-            ...fillings.map((elem) => {
-                return elem._id;
-            }),
-            bun._id,
-        ];
-
-        getOrderNumberAction(orderBody);
-        setIsVisible(true);
+        if (bun) {
+            const orderBody = [
+                bun._id,
+                ...fillings.map((elem) => {
+                    return elem._id;
+                }),
+                bun._id,
+            ];
+            getOrderNumberAction(orderBody);
+            setIsVisible(true);
+        }
     };
 
     const isActiveCont = isHover ? BurgerConstructorStyles.active : "";

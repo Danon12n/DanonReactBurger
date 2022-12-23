@@ -6,7 +6,7 @@ import {
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import React, { FC } from "react";
-import { authUserAction } from "../../services/actions/users";
+import { authUserAction } from "../../services/actions/user";
 import { useForm } from "../../hooks/useForm";
 
 const LoginPage: FC = () => {

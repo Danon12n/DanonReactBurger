@@ -1,0 +1,11 @@
+.FeedsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    max-height: 800px;
+}
+.link {
+    text-decoration: none;
+    color: white;
+}

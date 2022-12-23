@@ -1,4 +1,5 @@
-import { TServerAnswer } from "../types/types";
+import { TIngredientWithCounter, TServerAnswer } from "../types/types";
+import { getCookie } from "./cookie";
 
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
@@ -22,12 +23,26 @@ export const getIngredients = () => {
 };
 
 export const createOrder = (orderBody: Array<string>) => {
+    const accessToken = getCookie("token") as string;
+
     return request(`${BURGER_API_URL}/orders`, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            authorization: accessToken,
         },
         body: JSON.stringify({ ingredients: orderBody }),
     });
+};
+
+//поиск ингредиента по ID среди уникальных из стора
+export const getIngredientById = (
+    ingredientId: string,
+    ingredients: TIngredientWithCounter[]
+) => {
+    const ingredient = ingredients.find(
+        (el: TIngredientWithCounter) => el._id === ingredientId
+    );
+    return ingredient;
 };

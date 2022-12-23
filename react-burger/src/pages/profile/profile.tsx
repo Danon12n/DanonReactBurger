@@ -1,147 +1,44 @@
 import styles from "./profile.module.css";
-import React, { useState, useEffect, FC } from "react";
-import {
-    PasswordInput,
-    Input,
-    Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { FC, useEffect } from "react";
 import SideNavigation from "../../components/side-navigation/side-navigation";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import {
-    getUserAction,
-    updateUserInfoAction,
-} from "../../services/actions/users";
-import OrdersHistory from "../../components/orders-history/orders-history";
-import { TStore, TStoreUser, TUserInfo } from "../../types/types";
+import { UserProfile } from "../../components/user-profile/user-profile";
+import { FeedsList } from "../../components/feeds-list/feeds-list";
+import { boundOrdersWS } from "../../services/actions/ordersWS";
+import { getCookie } from "../../utils/cookie";
+import { useSelector } from "react-redux";
+import { TStore } from "../../types/types";
+import { TOrdersWSState } from "../../services/reducers/ordersWS";
 
 const ProfilePage: FC = () => {
-    const { user } = useSelector<TStore, TStoreUser>((store) => store.users);
     const { pathname } = useLocation();
-    const [option, setOption] = useState("");
-    const [isInfoChanged, setIsInfoChanged] = useState(false);
-
-    const [userInfo, setUserInfo] = useState<TUserInfo>({
-        email: "",
-        name: "",
-        password: "",
-    });
 
     useEffect(() => {
-        getUserAction();
+        const accessToken = getCookie("token");
+
+        boundOrdersWS.wsStart(
+            `wss://norma.nomoreparties.space/orders?token=${accessToken?.slice(
+                7
+            )}`
+        );
+
+        return () => {
+            boundOrdersWS.wsClosed();
+        };
     }, []);
 
-    useEffect(() => {
-        setUserInfo({
-            email: user?.email,
-            name: user?.name,
-        });
-    }, [user?.name, user?.email]);
+    const { feed } = useSelector<TStore, TOrdersWSState>(
+        (store) => store.orders
+    );
 
-    const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserInfo({
-            ...userInfo,
-            [e.target.name]: e.target.value,
-        });
-        setIsInfoChanged(true);
-    };
-
-    const onCancelClick = () => {
-        setOption("cancel");
-    };
-
-    const onSaveClick = () => {
-        setOption("save");
-    };
-
-    const onFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        switch (option) {
-            case "save":
-                if (userInfo.password === "") {
-                    setUserInfo({
-                        email: userInfo.email,
-                        name: userInfo.name,
-                    });
-                }
-                updateUserInfoAction(userInfo);
-                setIsInfoChanged(false);
-                break;
-            case "cancel":
-                getUserAction();
-                setUserInfo({
-                    ...userInfo,
-                    name: user.name,
-                    email: user.email,
-                });
-                setIsInfoChanged(false);
-                break;
-
-            default:
-                break;
-        }
-    };
+    if (!feed) return <>no feeds</>;
 
     return (
         <div className={styles.wrapper}>
             <SideNavigation />
-            {pathname === "/profile/orders" ? (
-                <OrdersHistory></OrdersHistory>
-            ) : (
-                <div className={styles.inputForm}>
-                    <form onSubmit={onFormSubmit}>
-                        <Input
-                            extraClass='mb-6'
-                            icon='EditIcon'
-                            name='name'
-                            value={userInfo.name}
-                            onChange={onChangeField}
-                            placeholder={"Имя"}
-                        />
-                        <Input
-                            extraClass='mb-6'
-                            inputMode='email'
-                            icon='EditIcon'
-                            name='email'
-                            value={userInfo.email}
-                            onChange={onChangeField}
-                            placeholder={"Логин"}
-                        />
-                        <PasswordInput
-                            extraClass='mb-6'
-                            icon='EditIcon'
-                            placeholder='Пароль'
-                            name='password'
-                            value={
-                                userInfo.password === undefined
-                                    ? ""
-                                    : userInfo.password
-                            }
-                            onChange={onChangeField}
-                        />
-                        {isInfoChanged && (
-                            <div className={styles.buttonsWrapper}>
-                                <Button
-                                    type='secondary'
-                                    htmlType='submit'
-                                    name='cancel'
-                                    onClick={onCancelClick}
-                                >
-                                    Отмена
-                                </Button>
-                                <Button
-                                    type='primary'
-                                    htmlType='submit'
-                                    name='save'
-                                    onClick={onSaveClick}
-                                >
-                                    Сохранить
-                                </Button>
-                            </div>
-                        )}
-                    </form>
-                </div>
+            {pathname === "/profile" && <UserProfile />}
+            {pathname === "/profile/orders" && (
+                <FeedsList path={pathname} feed={feed} />
             )}
         </div>
     );

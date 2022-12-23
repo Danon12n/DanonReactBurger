@@ -10,14 +10,16 @@ import NavItem from "./nav-item/nav-item";
 
 const NavItems = [
     {
+        activeIcon: <BurgerIcon type='primary' />,
         icon: <BurgerIcon type='secondary' />,
         text: "Конструкторная",
         path: "/",
     },
     {
+        activeIcon: <ListIcon type='primary' />,
         icon: <ListIcon type='secondary' />,
         text: "Лента заказов",
-        path: "/orders",
+        path: "/feed",
     },
 ];
 const AppHeader = () => {
@@ -33,6 +35,7 @@ const AppHeader = () => {
             </div>
             <NavItem
                 {...{
+                    activeIcon: <ProfileIcon type='primary' />,
                     icon: <ProfileIcon type='secondary' />,
                     text: "Личный кабинет",
                     path: "/profile",

@@ -5,17 +5,33 @@ import {
     GET_ORDER_NUMBER_FAILED,
     GET_ORDER_NUMBER_REQUEST,
     GET_ORDER_NUMBER_SUCCESS,
-} from "../constant";
+} from "../action-types/order-modal";
+
+export interface IGetOrderNumberRequest {
+    readonly type: typeof GET_ORDER_NUMBER_REQUEST;
+}
+export interface IGetOrderNumberSuccess {
+    readonly type: typeof GET_ORDER_NUMBER_SUCCESS;
+    payload: number;
+}
+export interface IGetOrderNumberFailed {
+    readonly type: typeof GET_ORDER_NUMBER_FAILED;
+}
+
+export type TOrderModalAction =
+    | IGetOrderNumberRequest
+    | IGetOrderNumberSuccess
+    | IGetOrderNumberFailed;
 
 const doGetOrderNumberRequest = () => ({
     type: GET_ORDER_NUMBER_REQUEST,
 });
-const doGetOrderNumberFailed = () => ({
-    type: GET_ORDER_NUMBER_FAILED,
-});
-const doGetOrderNumberSuccess = (orderNumber) => ({
+const doGetOrderNumberSuccess = (orderNumber: number) => ({
     type: GET_ORDER_NUMBER_SUCCESS,
     payload: orderNumber,
+});
+const doGetOrderNumberFailed = () => ({
+    type: GET_ORDER_NUMBER_FAILED,
 });
 
 export const boundOrderModal = bindActionCreators(
@@ -27,12 +43,12 @@ export const boundOrderModal = bindActionCreators(
     store.dispatch
 );
 
-export function getOrderNumberAction(orderBody) {
+export function getOrderNumberAction(orderBody: Array<string>) {
     boundOrderModal.orderRequest();
 
     createOrder(orderBody)
         .then((data) => {
-            boundOrderModal.orderSuccess(data.order.number);
+            if (data.order) boundOrderModal.orderSuccess(data.order.number);
         })
         .catch((err) => {
             boundOrderModal.orderFailed();

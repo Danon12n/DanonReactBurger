@@ -1,3 +1,36 @@
+// socketMiddleware
+import { TBurgerConstructorState } from "../services/reducers/burger-constructor";
+import { TBurgerIngredientsState } from "../services/reducers/burger-ingredients";
+import { TFeedModalState } from "../services/reducers/feed-modal";
+import { TFeedWSState } from "../services/reducers/feedWS";
+import { TIngredientModalState } from "../services/reducers/ingredient-modal";
+import { TOrderModalState } from "../services/reducers/order-modal";
+import { TOrdersWSState } from "../services/reducers/ordersWS";
+import { TUserState } from "../services/reducers/user";
+import { store } from "../services/store";
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
+export type TFeedOrder = {
+    success: boolean;
+    ingredients: Array<string>;
+    _id: string;
+    status: "created" | "pending" | "done";
+    name: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+    owner?: string;
+};
+
+export interface IFeedMessage {
+    success: boolean;
+    orders: Array<TFeedOrder>;
+    total: number;
+    totalToday: number;
+}
+// socketMiddleware
+
 export type TUser = {
     email: string;
     name: string;
@@ -20,38 +53,18 @@ export type TIngredient = {
 
 export type TIngredientWithCounter = TIngredient & {
     counter: number;
-};
-
-export type TConstructorIngredient = TIngredientWithCounter & {
     ingredientKey: string;
 };
 
-export type TStoreUser = {
-    isAuthed: boolean;
-    isCodeSent: boolean;
-    user: TUser;
-};
-export type TStoreOrderModal = {
-    orderNumber: number;
-};
-export type TStoreIngredientModal = {
-    currentIngredient: TIngredientWithCounter;
-};
-export type TStoreBurgerIngredients = {
-    ingredients: Array<TIngredientWithCounter>;
-    ingredientsRequest: boolean;
-};
-export type TStoreBurgerConstructor = {
-    fillings: Array<TConstructorIngredient>;
-    bun: TIngredientWithCounter;
-};
-
 export type TStore = {
-    users: TStoreUser;
-    orderModal: TStoreOrderModal;
-    ingredientModal: TStoreIngredientModal;
-    burgerIngredients: TStoreBurgerIngredients;
-    burgerConstructor: TStoreBurgerConstructor;
+    feedModal: TFeedModalState;
+    orders: TOrdersWSState;
+    feeds: TFeedWSState;
+    user: TUserState;
+    orderModal: TOrderModalState;
+    ingredientModal: TIngredientModalState;
+    burgerIngredients: TBurgerIngredientsState;
+    burgerConstructor: TBurgerConstructorState;
 };
 
 //API types
@@ -62,7 +75,11 @@ export type TServerAnswer = {
     user?: TUser;
     accessToken?: string;
     refreshToken?: string;
-    data?: Array<TIngredient>;
+    data?: Array<TIngredientWithCounter>;
+    order?: {
+        number: number;
+    };
+    orders?: Array<TFeedOrder>;
 };
 
 export type TResetPasswordBody = {
@@ -76,8 +93,8 @@ export type TLogoutUserBody = {
 export type TUpdateTokenBody = TLogoutUserBody;
 
 export type TUserInfo = {
-    email: string;
-    name: string;
+    email: string | undefined;
+    name: string | undefined;
     password?: string;
 };
 

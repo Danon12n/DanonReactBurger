@@ -8,8 +8,9 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, FC } from "react";
-import { TServerAnswer, TStore, TStoreUser } from "../../types/types";
+import { TServerAnswer, TStore } from "../../types/types";
 import { useForm } from "../../hooks/useForm";
+import { TUserState } from "../../services/reducers/user";
 
 const ResetPasswordPage: FC = () => {
     const [toggleRedirect, setToggleRedirect] = useState(false);
@@ -27,8 +28,8 @@ const ResetPasswordPage: FC = () => {
             });
     };
 
-    const { isCodeSent } = useSelector<TStore, TStoreUser>(
-        (store) => store.users
+    const { isCodeSent } = useSelector<TStore, TUserState>(
+        (store) => store.user
     );
 
     if (!isCodeSent) {

@@ -1,10 +1,11 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from "react-redux";
 import { FC } from "react";
-import { TStore, TStoreIngredientModal } from "../../types/types";
+import { TStore } from "../../types/types";
+import { TIngredientModalState } from "../../services/reducers/ingredient-modal";
 
 const IngredientDetails: FC = function () {
-    const { currentIngredient } = useSelector<TStore, TStoreIngredientModal>(
+    const { currentIngredient } = useSelector<TStore, TIngredientModalState>(
         (store) => store.ingredientModal
     );
 
