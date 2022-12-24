@@ -30,119 +30,175 @@ describe("burger Ingredients reducer", () => {
         });
     });
 
-    it("should handle INCREASE_INGREDIENT_COUNTER", () => {
+    it("should handle SET_IS_CODE_SENT", () => {
         expect(
             userReducer(
                 {
-                    ingredients: [
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-                    ],
-                    ingredientsRequest: false,
-                    ingredientsFailed: false,
-                },
-                {
-                    type: types.INCREASE_INGREDIENT_COUNTER,
-                    payload: "_id",
-                }
-            )
-        ).toEqual({
-            ingredients: [
-                // prettier-ignore
-                { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,1,"") },
-                // prettier-ignore
-                { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-            ],
-            ingredientsRequest: false,
-            ingredientsFailed: false,
-        });
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
 
-        expect(
-            userReducer(
-                {
-                    ingredients: [
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-                    ],
-                    ingredientsRequest: false,
-                    ingredientsFailed: false,
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
                 },
                 {
-                    type: types.INCREASE_INGREDIENT_COUNTER,
-                    payload: "_id1",
+                    type: types.SET_IS_CODE_SENT,
+                    payload: true,
                 }
             )
         ).toEqual({
-            ingredients: [
-                // prettier-ignore
-                { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                // prettier-ignore
-                { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,2,"") },
-            ],
-            ingredientsRequest: false,
-            ingredientsFailed: false,
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: true,
+
+            user: null,
         });
     });
 
-    it("should handle DECREASE_INGREDIENT_COUNTER", () => {
+    it("should handle SET_AUTHED", () => {
         expect(
             userReducer(
                 {
-                    ingredients: [
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,1,"") },
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-                    ],
-                    ingredientsRequest: false,
-                    ingredientsFailed: false,
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
                 },
                 {
-                    type: types.DECREASE_INGREDIENT_COUNTER,
-                    payload: "_id",
+                    type: types.SET_AUTHED,
+                    payload: true,
                 }
             )
         ).toEqual({
-            ingredients: [
-                // prettier-ignore
-                { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                // prettier-ignore
-                { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-            ],
-            ingredientsRequest: false,
-            ingredientsFailed: false,
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: true,
+            isCodeSent: false,
+
+            user: null,
         });
 
         expect(
             userReducer(
                 {
-                    ingredients: [
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                        // prettier-ignore
-                        { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,2,"") },
-                    ],
-                    ingredientsRequest: false,
-                    ingredientsFailed: false,
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: true,
+                    isCodeSent: false,
+
+                    user: null,
                 },
                 {
-                    type: types.DECREASE_INGREDIENT_COUNTER,
-                    payload: "_id1",
+                    type: types.SET_AUTHED,
+                    payload: false,
                 }
             )
         ).toEqual({
-            ingredients: [
-                // prettier-ignore
-                { ...generateTestIngedient("_id","","souce",0,0,0,0,0,"","","",0,0,"") },
-                // prettier-ignore
-                { ...generateTestIngedient("_id1","","bun",0,0,0,0,0,"","","",0,0,"") },
-            ],
-            ingredientsRequest: false,
-            ingredientsFailed: false,
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: false,
+            isCodeSent: false,
+
+            user: null,
         });
     });
 
@@ -669,6 +725,529 @@ describe("burger Ingredients reducer", () => {
 
             logoutRequest: false,
             logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle UPDATE_USER_INFO_REQUEST", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_USER_INFO_REQUEST,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: true,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle UPDATE_USER_INFO_SUCCESS", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: true,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_USER_INFO_SUCCESS,
+                    payload: {
+                        email: "email",
+                        name: "name",
+                    },
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: {
+                email: "email",
+                name: "name",
+            },
+        });
+    });
+
+    it("should handle UPDATE_USER_INFO_FAILED", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: true,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_USER_INFO_FAILED,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: true,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle UPDATE_TOKEN_REQUEST", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_TOKEN_REQUEST,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: true,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle UPDATE_TOKEN_SUCCESS", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: true,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_TOKEN_SUCCESS,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle UPDATE_USER_INFO_FAILED", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: true,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.UPDATE_TOKEN_FAILED,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: true,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle LOGOUT_REQUEST", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: false,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.LOGOUT_REQUEST,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: true,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle LOGOUT_SUCCESS", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: true,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: {
+                        email: "email",
+                        name: "name",
+                    },
+                },
+                {
+                    type: types.LOGOUT_SUCCESS,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: false,
+
+            updateTokenRequest: false,
+            updateTokenFailed: false,
+
+            isAuthed: null,
+            isCodeSent: false,
+
+            user: null,
+        });
+    });
+
+    it("should handle LOGOUT_FAILED", () => {
+        expect(
+            userReducer(
+                {
+                    updateUserInfoRequest: false,
+                    updateUserInfoFailed: false,
+
+                    getUserRequest: false,
+                    getUserFailed: false,
+
+                    registerRequest: false,
+                    registerFailed: false,
+
+                    authRequest: false,
+                    authFailed: false,
+
+                    logoutRequest: true,
+                    logoutFailed: false,
+
+                    updateTokenRequest: false,
+                    updateTokenFailed: false,
+
+                    isAuthed: null,
+                    isCodeSent: false,
+
+                    user: null,
+                },
+                {
+                    type: types.LOGOUT_FAILED,
+                }
+            )
+        ).toEqual({
+            updateUserInfoRequest: false,
+            updateUserInfoFailed: false,
+
+            getUserRequest: false,
+            getUserFailed: false,
+
+            registerRequest: false,
+            registerFailed: false,
+
+            authRequest: false,
+            authFailed: false,
+
+            logoutRequest: false,
+            logoutFailed: true,
 
             updateTokenRequest: false,
             updateTokenFailed: false,
