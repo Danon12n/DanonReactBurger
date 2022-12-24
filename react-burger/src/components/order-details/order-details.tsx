@@ -3,7 +3,7 @@ import DoneIcon from "../../images/done.svg";
 import { useSelector } from "react-redux";
 import { FC } from "react";
 import { TStore } from "../../types/types";
-import { TOrderModalState } from "../../services/reducers/order-modal";
+import { TOrderModalState } from "../../services/reducers/order-modal/order-modal";
 
 const OrderDetails: FC = () => {
     const { orderNumber } = useSelector<TStore, TOrderModalState>(

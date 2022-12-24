@@ -1,6 +1,6 @@
-import { TOrderModalAction } from "../actions/order-modal";
+import { TOrderModalAction } from "../../actions/order-modal";
 
-export type  TOrderModalState = {
+export type TOrderModalState = {
     orderNumber: number | null;
     orderNumberRequest: boolean;
     orderNumberFailed: boolean;

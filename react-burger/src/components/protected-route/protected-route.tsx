@@ -2,7 +2,7 @@ import { Route, Redirect, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { TStore } from "../../types/types";
 import { useSelector } from "react-redux";
-import { TUserState } from "../../services/reducers/user";
+import { TUserState } from "../../services/reducers/user/user";
 
 interface IProtectedRouteProps {
     children?: JSX.Element;

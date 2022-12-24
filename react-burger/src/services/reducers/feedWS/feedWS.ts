@@ -1,50 +1,47 @@
-import type { IFeedMessage } from "../../types/types";
-import { TOrdersWSAction } from "../actions/ordersWS";
+import type { IFeedMessage } from "../../../types/types";
+import { TFeedWSAction } from "../../actions/feedWS";
 
-export type TOrdersWSState = {
+export type TFeedWSState = {
     wsConnected: boolean;
     error: boolean;
     feed: IFeedMessage | null;
 };
 
-const initialState: TOrdersWSState = {
+const initialState: TFeedWSState = {
     wsConnected: false,
     error: false,
     feed: null,
 };
 
-export const ordersWSReducer = (
-    state = initialState,
-    action: TOrdersWSAction
-) => {
+export const feedWSReducer = (state = initialState, action: TFeedWSAction) => {
     switch (action.type) {
-        case "ORDERS_WS_CONNECTION_SUCCESS":
+        case "FEED_WS_CONNECTION_SUCCESS":
             return {
                 ...state,
                 error: false,
                 wsConnected: true,
             };
-        case "ORDERS_WS_CONNECTION_ERROR":
+        case "FEED_WS_CONNECTION_ERROR":
             return {
                 ...state,
                 error: true,
                 wsConnected: false,
             };
-        case "ORDERS_WS_CONNECTION_CLOSED":
+        case "FEED_WS_CONNECTION_CLOSED":
             return {
                 ...state,
                 error: false,
                 wsConnected: false,
             };
-        case "ORDERS_WS_CONNECTION_START":
+        case "FEED_WS_CONNECTION_START":
             return { ...state };
-        case "ORDERS_WS_GET_MESSAGE":
+        case "FEED_WS_GET_MESSAGE":
             return {
                 ...state,
                 error: false,
                 feed: { ...action.payload },
             };
-        case "ORDERS_WS_SEND_MESSAGE":
+        case "FEED_WS_SEND_MESSAGE":
             return { ...state };
         default:
             return state;

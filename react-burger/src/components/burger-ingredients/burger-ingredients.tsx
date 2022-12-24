@@ -6,7 +6,7 @@ import Category from "./category/category";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 import { FC } from "react";
 import { TStore } from "../../types/types";
-import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients/burger-ingredients";
 
 const BurgerIngredients: FC = () => {
     useEffect(() => {

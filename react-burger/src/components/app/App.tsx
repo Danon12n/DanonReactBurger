@@ -20,17 +20,6 @@ import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import { FeedDetails } from "../feed-details/feed-details";
 import { FeedPage } from "../../pages/feed/feed";
 
-//TODOs
-
-/*
-    ()  -Перенести хранилище в ts
-    ()  -Добавить новые роуты /feed , /feed/:id и /profile/orders/, /profile/orders/:id
-    ()  -Реализовать модалки и отдельные страницы с этими роутами как с ингредиентами
-    ()  -Оформить реализацию websocket
-    ()  -сверстать страницы с лентой заказов и историей заказов
-    ()  -подумать как реализовать работу с двумя сокет соединениями
-*/
-
 function App() {
     useEffect(() => {
         const accessToken = getCookie("token");
