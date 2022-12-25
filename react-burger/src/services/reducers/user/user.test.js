@@ -1,6 +1,5 @@
 import { userReducer } from "./user";
 import * as types from "../../action-types/user";
-import { generateTestIngedient } from "../../../utils/object-generator";
 
 describe("burger Ingredients reducer", () => {
     it("should return the initial state", () => {
