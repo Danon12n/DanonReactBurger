@@ -27,7 +27,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "predeploy": "npm run build",
-        "deploy": "scp -r ./build/* danon12n@51.250.97.1:~/stellar-frontend"
+        "deploy": "gh-pages -d build"
     },
     "eslintConfig": {
         "extends": [
@@ -48,6 +48,7 @@
         ]
     },
     "devDependencies": {
+        "@4tw/cypress-drag-drop": "^2.2.3",
         "@testing-library/react": "^13.4.0",
         "@types/jest": "^29.2.3",
         "@types/node": "^18.11.9",

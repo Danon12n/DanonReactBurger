@@ -33,11 +33,11 @@ const BurgerIngredients: FC = () => {
             ingredients: ingredients.filter((item) => item.type === "bun"),
         },
         {
-            name: "Соусы",
+            name: "Начинки",
             ingredients: ingredients.filter((item) => item.type === "main"),
         },
         {
-            name: "Начинки",
+            name: "Соусы",
             ingredients: ingredients.filter((item) => item.type === "sauce"),
         },
     ];
