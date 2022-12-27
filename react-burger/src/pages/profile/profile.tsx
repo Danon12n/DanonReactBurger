@@ -8,7 +8,7 @@ import { boundOrdersWS } from "../../services/actions/ordersWS";
 import { getCookie } from "../../utils/cookie";
 import { useSelector } from "react-redux";
 import { TStore } from "../../types/types";
-import { TOrdersWSState } from "../../services/reducers/ordersWS";
+import { TOrdersWSState } from "../../services/reducers/ordersWS/ordersWS";
 
 const ProfilePage: FC = () => {
     const { pathname } = useLocation();

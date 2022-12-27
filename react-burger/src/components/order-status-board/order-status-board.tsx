@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import { TFeedWSState } from "../../services/reducers/feedWS";
+import { TFeedWSState } from "../../services/reducers/feedWS/feedWS";
 import { TStore } from "../../types/types";
 import styles from "./order-status-board.module.css";
 

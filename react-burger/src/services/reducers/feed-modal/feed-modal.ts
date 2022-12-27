@@ -1,5 +1,5 @@
-import { TFeedOrder } from "../../types/types";
-import { TFeedModalAction } from "../actions/feed-modal";
+import { TFeedOrder } from "../../../types/types";
+import { TFeedModalAction } from "../../actions/feed-modal";
 
 export type TFeedModalState = {
     feed: TFeedOrder | null;

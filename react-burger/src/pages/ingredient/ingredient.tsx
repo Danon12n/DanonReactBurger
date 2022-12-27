@@ -6,7 +6,7 @@ import { getIngredientsAction } from "../../services/actions/burger-ingredients"
 import { boundIngredientModal } from "../../services/actions/ingredient-modal";
 import { FC, useEffect } from "react";
 import { TStore } from "../../types/types";
-import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients/burger-ingredients";
 
 const IngredientPage: FC = () => {
     const { ingredients, ingredientsRequest } = useSelector<

@@ -6,12 +6,12 @@ import { FC, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getFeedAction } from "../../services/actions/feed-modal";
-import { TFeedModalState } from "../../services/reducers/feed-modal";
+import { TFeedModalState } from "../../services/reducers/feed-modal/feed-modal";
 import { TIngredientWithCounter, TStore } from "../../types/types";
 import styles from "./feed-details.module.css";
 import { IngredientIcon } from "../feeds-list/feed-card/ingredient-icon/ingredient-icon";
 import { getIngredientById } from "../../utils/burger-api";
-import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients/burger-ingredients";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
 
 const FeedDetails: FC = () => {

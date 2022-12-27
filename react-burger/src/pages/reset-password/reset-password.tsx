@@ -10,7 +10,7 @@ import {
 import { useState, FC } from "react";
 import { TServerAnswer, TStore } from "../../types/types";
 import { useForm } from "../../hooks/useForm";
-import { TUserState } from "../../services/reducers/user";
+import { TUserState } from "../../services/reducers/user/user";
 
 const ResetPasswordPage: FC = () => {
     const [toggleRedirect, setToggleRedirect] = useState(false);

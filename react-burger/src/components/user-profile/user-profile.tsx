@@ -11,7 +11,7 @@ import {
     updateUserInfoAction,
 } from "../../services/actions/user";
 import styles from "./user-profile.module.css";
-import { TUserState } from "../../services/reducers/user";
+import { TUserState } from "../../services/reducers/user/user";
 
 interface IUserProfileProps {}
 
@@ -88,7 +88,7 @@ const UserProfile: FC<IUserProfileProps> = ({}) => {
                     extraClass='mb-6'
                     icon='EditIcon'
                     name='name'
-                    value={userInfo?.name ?  userInfo.name : ""}
+                    value={userInfo?.name ? userInfo.name : ""}
                     onChange={onChangeField}
                     placeholder={"Имя"}
                 />
@@ -97,7 +97,7 @@ const UserProfile: FC<IUserProfileProps> = ({}) => {
                     inputMode='email'
                     icon='EditIcon'
                     name='email'
-                    value={userInfo?.email ?  userInfo.email : ""}
+                    value={userInfo?.email ? userInfo.email : ""}
                     onChange={onChangeField}
                     placeholder={"Логин"}
                 />

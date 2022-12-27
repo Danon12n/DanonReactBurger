@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import { FeedsList } from "../../components/feeds-list/feeds-list";
 import { OrderStatusBoard } from "../../components/order-status-board/order-status-board";
 import { boundFeedWS } from "../../services/actions/feedWS";
-import { TFeedWSState } from "../../services/reducers/feedWS";
+import { TFeedWSState } from "../../services/reducers/feedWS/feedWS";
 import { TStore } from "../../types/types";
 import styles from "./feeds.module.css";
-
 
 const FeedsPage: FC = () => {
     useEffect(() => {
@@ -29,7 +28,7 @@ const FeedsPage: FC = () => {
                         Лента заказов
                     </h1>
                     <div className={styles.FeedsWrapper}>
-                        <FeedsList path="feed" feed={feed} />
+                        <FeedsList path='feed' feed={feed} />
                         <OrderStatusBoard />
                     </div>
                 </div>

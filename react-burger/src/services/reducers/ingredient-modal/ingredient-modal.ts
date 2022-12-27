@@ -1,7 +1,7 @@
-import { TIngredientWithCounter } from "../../types/types";
-import { TIngredientModalAction } from "../actions/ingredient-modal";
+import { TIngredientWithCounter } from "../../../types/types";
+import { TIngredientModalAction } from "../../actions/ingredient-modal";
 
-export type  TIngredientModalState = {
+export type TIngredientModalState = {
     currentIngredient: TIngredientWithCounter | null;
 };
 

@@ -1,5 +1,5 @@
-import { TUser } from "../../types/types";
-import { TUserAction } from "../actions/user";
+import { TUser } from "../../../types/types";
+import { TUserAction } from "../../actions/user";
 
 export type TUserState = {
     updateUserInfoRequest: boolean;
@@ -153,6 +153,7 @@ export const userReducer = (state = initialState, action: TUserAction) => {
             return {
                 ...state,
                 logoutFailed: false,
+                logoutRequest: false,
                 user: null,
             };
         case "LOGOUT_FAILED":

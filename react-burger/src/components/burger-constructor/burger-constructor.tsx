@@ -15,9 +15,9 @@ import { getOrderNumberAction } from "../../services/actions/order-modal";
 import { useDrop } from "react-dnd/dist/hooks/useDrop";
 import { Redirect } from "react-router-dom";
 import { TIngredientWithCounter, TStore } from "../../types/types";
-import { TUserState } from "../../services/reducers/user";
-import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
-import { TBurgerConstructorState } from "../../services/reducers/burger-constructor";
+import { TUserState } from "../../services/reducers/user/user";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients/burger-ingredients";
+import { TBurgerConstructorState } from "../../services/reducers/burger-constructor/burger-constructor";
 
 type TItemId = {
     _id: string;

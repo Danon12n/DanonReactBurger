@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getIngredientsAction } from "../../services/actions/burger-ingredients";
-import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients";
+import { TBurgerIngredientsState } from "../../services/reducers/burger-ingredients/burger-ingredients";
 import { IFeedMessage, TStore } from "../../types/types";
 import { FeedCard } from "./feed-card/feed-card";
 import styles from "./feeds-list.module.css";
