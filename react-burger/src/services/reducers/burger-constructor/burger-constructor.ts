@@ -1,6 +1,6 @@
-import { TIngredientWithCounter } from "../../types/types";
+import { TIngredientWithCounter } from "../../../types/types";
 
-import { TBurgerConstructorAction } from "../actions/burger-constructor";
+import { TBurgerConstructorAction } from "../../actions/burger-constructor";
 
 export type TBurgerConstructorState = {
     fillings: Array<TIngredientWithCounter>;
@@ -20,7 +20,7 @@ export const burgerConstructorReducer = (
         case "UPDATE_CONSTRUCTOR_BUN":
             return {
                 ...state,
-                bun: action.payload,
+                bun: { ...action.payload },
             };
         case "ADD_CONSTRUCTOR_INGREDIENT":
             return {

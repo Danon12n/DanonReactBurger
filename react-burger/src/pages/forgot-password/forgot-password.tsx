@@ -11,7 +11,7 @@ import React, { FC } from "react";
 import { boundUser } from "../../services/actions/user";
 import { TServerAnswer, TStore } from "../../types/types";
 import { useForm } from "../../hooks/useForm";
-import { TUserState } from "../../services/reducers/user";
+import { TUserState } from "../../services/reducers/user/user";
 
 const ForgotPasswordPage: FC = () => {
     const { values, handleChange } = useForm({ email: "" });

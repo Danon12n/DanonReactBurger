@@ -1,12 +1,12 @@
 // socketMiddleware
-import { TBurgerConstructorState } from "../services/reducers/burger-constructor";
-import { TBurgerIngredientsState } from "../services/reducers/burger-ingredients";
-import { TFeedModalState } from "../services/reducers/feed-modal";
-import { TFeedWSState } from "../services/reducers/feedWS";
-import { TIngredientModalState } from "../services/reducers/ingredient-modal";
-import { TOrderModalState } from "../services/reducers/order-modal";
-import { TOrdersWSState } from "../services/reducers/ordersWS";
-import { TUserState } from "../services/reducers/user";
+import { TBurgerConstructorState } from "../services/reducers/burger-constructor/burger-constructor";
+import { TBurgerIngredientsState } from "../services/reducers/burger-ingredients/burger-ingredients";
+import { TFeedModalState } from "../services/reducers/feed-modal/feed-modal";
+import { TFeedWSState } from "../services/reducers/feedWS/feedWS";
+import { TIngredientModalState } from "../services/reducers/ingredient-modal/ingredient-modal";
+import { TOrderModalState } from "../services/reducers/order-modal/order-modal";
+import { TOrdersWSState } from "../services/reducers/ordersWS/ordersWS";
+import { TUserState } from "../services/reducers/user/user";
 import { store } from "../services/store";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -112,3 +112,7 @@ export type TAuthUserBody = {
 };
 
 //API types
+
+//Test Types
+
+//Test Types

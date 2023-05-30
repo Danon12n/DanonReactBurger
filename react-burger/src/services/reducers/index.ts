@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
-import { burgerIngredientsReducer } from "./burger-ingredients";
-import { burgerConstructorReducer } from "./burger-constructor";
-import { ingredientModalReducer } from "./ingredient-modal";
-import { orderModalReducer } from "./order-modal";
-import { userReducer } from "./user";
-import { feedWSReducer } from "./feedWS";
-import { ordersWSReducer } from "./ordersWS";
-import { feedModalReducer } from "./feed-modal";
+import { burgerIngredientsReducer } from "./burger-ingredients/burger-ingredients";
+import { burgerConstructorReducer } from "./burger-constructor/burger-constructor";
+import { ingredientModalReducer } from "./ingredient-modal/ingredient-modal";
+import { orderModalReducer } from "./order-modal/order-modal";
+import { userReducer } from "./user/user";
+import { feedWSReducer } from "./feedWS/feedWS";
+import { ordersWSReducer } from "./ordersWS/ordersWS";
+import { feedModalReducer } from "./feed-modal/feed-modal";
 
 export const rootReducer = combineReducers({
     burgerConstructor: burgerConstructorReducer,
